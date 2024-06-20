@@ -1,4 +1,5 @@
 name: "training-fsa"
+output_dir: docs
 navbar:
   title: "training-fsa"
   left:
