@@ -2,7 +2,7 @@ name: "training-fsa"
 navbar:
   title: "training-fsa"
   left:
-    - text: "Home"
+    - text: "Training 1"
       href: index.html
-    - text: "About"
+    - text: "Training 2"
       href: about.html
