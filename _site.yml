@@ -3,7 +3,11 @@ output_dir: docs
 navbar:
   title: "training-fsa"
   left:
-    - text: "Training 1"
-      href: index.html
-    - text: "Training 2"
-      href: about.html
+    - text: "(1) Data import"
+      href: 1_introduction.html
+    - text: "(2) Univariate statistic analysis"
+      href: 2_univariate.html
+    - text: "(3) Grouping"
+      href: 3_grouping.html
+    - text: "(4) Threshold and re-grouping"
+      href: 4_regrouping.html

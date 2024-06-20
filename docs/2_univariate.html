@@ -58,6 +58,29 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -244,7 +267,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="1_introduction.html">(1) Data import</a>
+  <a href="1_introduction.html">(1) Introduction</a>
 </li>
 <li>
   <a href="2_univariate.html">(2) Univariate statistic analysis</a>
@@ -284,6 +307,59 @@ Science Limited, and run within R (and R studio) which should be
 installed on the trainees local computer.</p>
 <p>Working individually or in pairs, attendees will self-pace their
 progress through the training material and example data provided.</p>
+</div>
+<div id="cefic-matching-metabolomics-data-set" class="section level1">
+<h1>Cefic MATCHING metabolomics data set</h1>
+<p>The tutorial will use data generated as part of the the Cefic
+MATCHING study.</p>
+<p>The aim of the Cefic MATCHING study was to conduct a blinded
+international ring-trial to investigate whether 6 metabolomics labs,
+each generating, analysing and reporting metabolomics data from a single
+exposure study (rodent plasma), generate the same grouping hypothesis
+<span class="citation">(<a href="#ref-viant2024demonstrating">Viant et
+al. 2024</a>)</span>.</p>
+<p>Independent variables:</p>
+<ul>
+<li>Test substances: TS1, TS2, TS3, TS4, TS5, TS7, TS8, TS9</li>
+<li>Sex: Male, Female</li>
+<li>Doses: High, Low</li>
+</ul>
+<p>Note that TS6 was excluded prior to exposures.</p>
+<p>The data input for the tutorial will of the processed mass
+spectrometry data derived from the data collected as part from one of
+the ring-trial labs (Phenome Centre Birmingham).</p>
+</div>
+<div id="cefic-matching-metabolomics-unblinded" class="section level1">
+<h1>Cefic MATCHING metabolomics unblinded!</h1>
+<p>Decide if we remove this later</p>
+<pre class="r"><code>summary(cars)</code></pre>
+<pre><code>##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00</code></pre>
+</div>
+<div id="including-plots" class="section level1">
+<h1>Including Plots</h1>
+<p>You can also embed plots, for example:</p>
+<p><img src="2_univariate_files/figure-html/pressure-1.png" width="672" /></p>
+<p>Note that the <code>echo = FALSE</code> parameter was added to the
+code chunk to prevent printing of the R code that generated the
+plot.</p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-viant2024demonstrating" class="csl-entry">
+Viant, Mark R, E Amstalden, T Athersuch, M Bouhifd, S Camuzeaux, DM
+Crizer, P Driemert, et al. 2024. <span>“Demonstrating the Reliability of
+in Vivo Metabolomics Based Chemical Grouping: Towards Best
+Practice.”</span> <em>Archives of Toxicology</em>, 1–13.
+</div>
+</div>
 </div>
 
 
