@@ -12,7 +12,7 @@
 
 <meta name="date" content="2024-06-20" />
 
-<title>FSA NAMs Training Course 3 (Session 3)</title>
+<title>Introductory practical experience in conducting omics-based grouping</title>
 
 <script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -58,6 +58,29 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -244,16 +267,22 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="1_introduction.html">(1) Data import</a>
+  <a href="1_data_processing.html">(1) Data processing</a>
 </li>
 <li>
-  <a href="2_univariate.html">(2) Univariate statistic analysis</a>
+  <a href="2_qa.html">(2) QA</a>
 </li>
 <li>
-  <a href="3_grouping.html">(3) Grouping</a>
+  <a href="3_stats.html">(3) Differentially abundant molecules - statistical analysis</a>
 </li>
 <li>
-  <a href="4_regrouping.html">(4) Threshold and re-grouping</a>
+  <a href="4_grouping.html">(4) Grouping</a>
+</li>
+<li>
+  <a href="5_unblinding.html">(5) Unblinding</a>
+</li>
+<li>
+  <a href="6_more_info.html">(6) More info</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -267,23 +296,92 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">FSA NAMs Training Course 3 (Session 3)</h1>
-<h3 class="subtitle">Introductory practical experience in conducting
-omics-based grouping</h3>
+<h1 class="title toc-ignore">Introductory practical experience in
+conducting omics-based grouping</h1>
 <h4 class="date">2024-06-20</h4>
 
 </div>
 
 
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
 <p>The session focuses on a practical introduction to the calculation
-and interpretation of bioactivity similarity, with visual outputs.</p>
+and interpretation of bioactivity similarity, with visual outputs
+(i.e. step 3 in the overall grouping workflow)</p>
+<div class="float">
+<img src="five_step_grouping_workflow.png"
+alt="Fig 1. Five step grouping workflow" />
+<div class="figcaption">Fig 1. Five step grouping workflow</div>
+</div>
+<p> </p>
 <p>The training will use existing code developed by Michabo Health
 Science Limited, and run within R (and R studio) which should be
 installed on the trainees local computer.</p>
 <p>Working individually or in pairs, attendees will self-pace their
 progress through the training material and example data provided.</p>
+<p>Data files will be available from a prior email or you can download
+from here</p>
+<ul>
+<li><a href="https://github.com/michabohealthscience/training-fsa/data"
+class="uri">https://github.com/michabohealthscience/training-fsa/data</a></li>
+</ul>
+<p>The tutorial can be followed from html files previous sent in the
+email or from the following link</p>
+<ul>
+<li><a href="https://michabohealthscience.github.io/training-fsa/"
+class="uri">https://michabohealthscience.github.io/training-fsa/</a></li>
+</ul>
+</div>
+<div id="metabolomics" class="section level2">
+<h2>Metabolomics</h2>
+<p>This tutorial will be using metabolomics data however the same
+principals can (and have been) applied to other Omics data
+(i.e. transcripomics - ref Azo dye paper).</p>
+<p>As a quick summary we are referring to the metabolome as the total
+collection of endogenous metabolites in a cell/tissue/organism. We refer
+to endogous metabolites being both xxx and lipid compounds.</p>
+<p>todo - add Metabolomics figure summary.</p>
+<p>A number of good overviews are available for this [ref 1], [ref
+2]</p>
+<p><a
+href="https://www.nature.com/articles/s41592-021-01197-1/figures/1"
+class="uri">https://www.nature.com/articles/s41592-021-01197-1/figures/1</a></p>
+</div>
+<div id="training-sections" class="section level2">
+<h2>Training sections</h2>
+<p>The training will involve four stages</p>
+<ol style="list-style-type: decimal">
+<li><a href="1_data_processing.html">Data processing</a> - where an
+example Omics dataset will be introduced and pre-processed data will be
+imported into R. Using data from the Cefic MATCHING project <span
+class="citation">(<a href="#ref-viant2024demonstrating">Viant et al.
+2024</a>)</span></li>
+<li><a href="2_qa.html">Quality assessments</a> - xxx</li>
+<li><a href="3_stats.html">Differentially abundant molecules -
+statistical analysis</a> - Assess the bioactivity of the dataset and
+generate the input for the grouping</li>
+<li><a href="4_grouping.html">Grouping</a> - Where the univariate
+results will be used to perform a grouping of test substances</li>
+<li><a href="5_unblinding.html">Unblinding!</a> - Where we find out if
+our grouping matches the known mode of actions of our test
+substances</li>
+<li><a href="6_more_info.html">Further details</a> - Further details for
+different parts of the workflow</li>
+</ol>
+<p>Todo - perhaps add workflow to show where this part of the analysis
+fits into a standard omics / metabolomics analysis? - Mention OORF?</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-viant2024demonstrating" class="csl-entry">
+Viant, Mark R, E Amstalden, T Athersuch, M Bouhifd, S Camuzeaux, DM
+Crizer, P Driemert, et al. 2024. <span>“Demonstrating the Reliability of
+in Vivo Metabolomics Based Chemical Grouping: Towards Best
+Practice.”</span> <em>Archives of Toxicology</em>, 1–13.
+</div>
+</div>
 </div>
 
 

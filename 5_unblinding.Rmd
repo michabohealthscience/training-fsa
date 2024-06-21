@@ -1,0 +1,46 @@
+---
+title: "Cefic MATCHING metabolomics unblinded!"
+#subtitle: "Introductory practical experience in conducting omics-based grouping"
+authors: "Michabo Health Science Ltd"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: false
+link-citations: true
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Compound and mode of action details
+
+```{r table, tidy=FALSE, echo=FALSE}
+data <- read.csv('cefic_matching_compounds.csv', stringsAsFactors = FALSE, header = TRUE, check.names=FALSE)
+knitr::kable((data), booktabs = TRUE,
+caption = 'Table 4.1: Cefic MATCHING unblinded test substances')
+```
+
+&nbsp;
+
+
+![Fig 4.1. Cefic MATCHING unblinded - summary](cefic_matching_compounds.png)
+
+&nbsp;
+
+## Chemical grouping using structure only
+
+<!-- ![Fig 4.2. Cefic MATCHING compound PCA (MACCS fingerprints)](cefic_matching_compounds_pca_maccs.png){width=400px} -->
+
+<!-- &nbsp; -->
+
+![Fig 4.2. Cefic MATCHING compound HCA (MACCS fingerprints)](cefic_matching_compounds_hca_maccs.png)
+
+&nbsp;
+
+

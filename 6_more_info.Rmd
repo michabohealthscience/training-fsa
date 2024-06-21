@@ -1,0 +1,57 @@
+---
+title: "Supplemental"
+#subtitle: "Introductory practical experience in conducting omics-based grouping"
+authors: "Michabo Health Science Ltd"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: false
+link-citations: true
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Data processing further details
+
+In brief the following steps were performed:
+
+* Conversion of the RAW mass spectrometry files to open source mzML format. And centroiding the full profile of the raw data
+* Data reduction: Full scan (MS1) "peak picking", grouping and any rentiontion time correction performed by XCMS software
+* Feature intensity drift and/or batch correction
+* Identification and removal ("filtering") of features 
+* Identification and removal ("filtering") of outlying samples
+* Normalisation: Using PQN median samples as reference (Dieterle et al. 2006))
+
+Noting that for multivariate analysis the methodology would tyically undergo an missing value imputation and glog transfromations in addition to the above. However, we won't be considering multivariate analysis on the intensity data for the analysis today.
+
+# Principal component analysis
+
+Plot with ggplot rather ggfortify
+
+```{r hilic_pos_glog_pca}
+library(ggplot2)
+library(openxlsx)
+sample_metadata <- read.xlsx('female/pmp_HILIC_POS.xlsx', sheet='sample_meta')
+glog <- read.xlsx('female/pmp_HILIC_POS.xlsx', sheet='glog')
+# Remove the first column which is just the id of the feature i.e. hilic_pos_glog[,-1]
+# Then transpose so that samples are rows and features are columns i.e. t(hilic_pos_glog[,-1)
+glog_t <- t(glog[,-1])
+
+pca <- prcomp(glog_t, center = TRUE, scale. = TRUE)
+pca_df <- cbind(pca$x[,1:2], sample_metadata)
+
+ggplot(pca_df, aes(PC1, PC2, color=test_substance)) + 
+  geom_point(aes(shape=dose_group, color=test_substance)) +
+  stat_ellipse(geom = "polygon", aes(fill = after_scale(alpha(colour, 0.3))))+
+  scale_colour_manual(values=c("khaki","black","blue", 'red', "grey",'orange', 'magenta', 'yellow', 'green', 'brown', 'purple'))+
+  scale_shape_manual(values=c(4,8,2,0))+
+  theme_bw()
+
+```

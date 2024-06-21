@@ -1,8 +1,9 @@
 ---
-title: "FSA NAMs Training Course 3 (Session 3)"
-subtitle: "Introductory practical experience in conducting omics-based grouping"
+title: "Introductory practical experience in conducting omics-based grouping"
+# subtitle: "Introduction"
 authors: "Michabo Health Science Ltd"
-output: html_document
+output: 
+  html_document
 link-citations: true
 bibliography: references.bib
 date: "2024-06-20"
@@ -12,11 +13,60 @@ date: "2024-06-20"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introduction
+## Introduction
 
-The session focuses on a practical introduction to the calculation and interpretation of bioactivity similarity, with visual outputs. 
+The session focuses on a practical introduction to the calculation and interpretation of bioactivity similarity, with visual outputs (i.e. step 3 in the overall grouping workflow)
+
+![Fig 1. Five step grouping workflow](five_step_grouping_workflow.png)
+
+&nbsp;
 
 The training will use existing code developed by Michabo Health Science Limited, and run within R (and R studio) which should be installed on the trainees local computer.
 
 Working individually or in pairs, attendees will self-pace their progress through the training material and example data provided.
 
+
+
+
+Data files will be available from a prior email or you can download from here
+
+- https://github.com/michabohealthscience/training-fsa/data
+
+
+The tutorial can be followed from html files previous sent in the email or from the following link
+
+- https://michabohealthscience.github.io/training-fsa/
+
+
+## Metabolomics
+
+This tutorial will be using metabolomics data however the same principals can (and have been) applied to other Omics data (i.e. transcripomics - ref Azo dye paper).
+
+As a quick summary we are referring to the metabolome as the total collection of endogenous metabolites in a cell/tissue/organism. We refer to endogous metabolites being both xxx and lipid compounds.
+
+todo - add Metabolomics figure summary.
+
+
+A number of good overviews are available for this [ref 1], [ref 2]
+
+https://www.nature.com/articles/s41592-021-01197-1/figures/1
+
+
+
+
+## Training sections
+
+The training will involve four stages
+
+1. [Data processing](1_data_processing.html) - where an example Omics dataset will be introduced and pre-processed data will be imported into R. Using data from the Cefic MATCHING project [@viant2024demonstrating]
+2. [Quality assessments](2_qa.html) - xxx
+3. [Differentially abundant molecules - statistical analysis](3_stats.html) - Assess the bioactivity of the dataset and generate the input for the grouping
+4. [Grouping](4_grouping.html)  - Where the univariate results will be used to perform a grouping of test substances
+5. [Unblinding!](5_unblinding.html) - Where we find out if our grouping matches the known mode of actions of our test substances
+6. [Further details](6_more_info.html) - Further details for different parts of the workflow
+
+
+Todo - perhaps add workflow to show where this part of the analysis fits into a standard omics / metabolomics analysis?
+     - Mention OORF?
+
+## References

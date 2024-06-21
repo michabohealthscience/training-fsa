@@ -1,0 +1,41 @@
+---
+title: "Bioactivity-based grouping"
+#subtitle: "Introductory practical experience in conducting omics-based grouping"
+authors: "Michabo Health Science Ltd"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    toc_depth: 3
+    number_sections: false
+link-citations: true
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# t-statistic grouping
+
+The Michabo Health Science workflow chemical grouping uses the control vs condition t-statistics as input. 
+
+This has the benifit of ....
+
+
+# Unit-scaling for each condition
+
+
+
+
+# t-stat - HCA
+
+
+
+
+# t-stat - PCA 
+
+
+
+# References
