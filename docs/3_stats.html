@@ -388,10 +388,9 @@ biological activity).</p>
 <p>Here we will be looking at data that already been checked for data
 quality (including QC samples, outlier samples) and we are now assessing
 what we believe is valid bioactivity.</p>
-<pre class="r"><code>library(openxlsx)
-# Read in the sample metadata and processed data matrix
-sample_metadata &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;sample_meta&#39;)
-glog &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;glog&#39;)</code></pre>
+<pre class="r"><code># Read in the sample metadata and processed data matrix
+sample_metadata &lt;- read.csv(&#39;data/m_HILIC_POS_sample_metadata_filtered.csv&#39;)
+glog &lt;- read.csv(&#39;data/m_HILIC_POS_glog.csv&#39;)</code></pre>
 <p>First we need to remove the first column of the matrix which was used
 to record the feature names and is not required for this tutorial</p>
 <pre class="r"><code># Remove the feature names (not required for this analysis)
@@ -433,10 +432,7 @@ condition</p>
 <p>Here we will a very common univariate statistical test to use for
 assessing samples from a specific condition against a control.</p>
 <p>Why t-test?</p>
-<pre class="r"><code>pqn &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;pqn_normalised&#39;)
-
-# Label the first column as feature_name so we can access more easily
-colnames(pqn)[1] &lt;- &#39;feature_name&#39;</code></pre>
+<pre class="r"><code>pqn &lt;- read.csv(&#39;data/m_HILIC_POS_pqn.csv&#39;)</code></pre>
 <p>Lets start with doing a single t-test for one feature and one
 condition</p>
 <pre class="r"><code># Get all the control samples (i.e. all those with dose 0)
@@ -445,34 +441,34 @@ control_samples &lt;- sample_metadata[,1][sample_metadata$dose_group==0]
 # Get the high dose group (2) for test substance 1
 ts1_dose_2_samples &lt;- sample_metadata[,1][sample_metadata$dose_group==2 &amp; sample_metadata$test_substance==1]
 
-# Select the 2000th feature which has the name M182T534
-M182T534 &lt;- pqn[2000,]
+# Select the 2000th feature as an example
+f2000 &lt;- pqn[2000,]
 
 # Perform a t-test for this feature subset based on the chosen samples
-ttest_out &lt;- t.test(M182T534[,control_samples], M182T534[,ts1_dose_2_samples])
+ttest_out &lt;- t.test(f2000[,control_samples], f2000[,ts1_dose_2_samples])
 
 ttest_out</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
-## data:  M182T534[, control_samples] and M182T534[, ts1_dose_2_samples]
-## t = -2.3401, df = 8.601, p-value = 0.04526
+## data:  f2000[, control_samples] and f2000[, ts1_dose_2_samples]
+## t = -5.0365, df = 5.033, p-value = 0.003906
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -114245.124   -1530.895
+##  -14670437  -4768483
 ## sample estimates:
 ## mean of x mean of y 
-##  267496.5  325384.5</code></pre>
-<p>There are two values we will use from the t-test</p>
+##   5568546  15288006</code></pre>
+<p>There are two values we will use later from the from the t-test</p>
 <ul>
-<li><strong>t-statistic (or t-value)</strong>:</li>
+<li><strong>t-statistic (or t-value)</strong></li>
 <li><strong>p-value</strong>:</li>
 </ul>
-<p>We can use a few loops in function to calculate this for all the
-conditions within the assay. Note there are multiple ways to acheive
-this, for loops are straightforward approach that do not require many
-additional packages however other packages (like plyr and tidyr) can
-acheive the same outcome.</p>
+<p>We can use a a few <code>for loops</code> in a <code>function</code>
+to calculate this for all the conditions within the assay. Note there
+are multiple ways to acheive this, for loops are straightforward
+approach that do not require many additional packages however other
+packages (like plyr and tidyr) can acheive the same outcome.</p>
 <pre class="r"><code>ttest_per_assay &lt;- function(pqn, sample_metadata){
     data_long &lt;- melt(ncounts_data, id.vars=c(&#39;sample_name&#39;))
   

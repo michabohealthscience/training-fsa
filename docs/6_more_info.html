@@ -376,9 +376,8 @@ the intensity data for the analysis today.</p>
 <h1>Principal component analysis</h1>
 <p>Plot with ggplot rather ggfortify</p>
 <pre class="r"><code>library(ggplot2)
-library(openxlsx)
-sample_metadata &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;sample_meta&#39;)
-glog &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;glog&#39;)
+sample_metadata &lt;- read.csv(&#39;data/m_HILIC_POS_sample_metadata_filtered.csv&#39;)
+glog &lt;- read.csv(&#39;data/m_HILIC_POS_glog.csv&#39;)
 # Remove the first column which is just the id of the feature i.e. hilic_pos_glog[,-1]
 # Then transpose so that samples are rows and features are columns i.e. t(hilic_pos_glog[,-1)
 glog_t &lt;- t(glog[,-1])

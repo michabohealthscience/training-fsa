@@ -18,29 +18,50 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Compound and mode of action details
+# Compound and mode of action details
 
 ```{r table, tidy=FALSE, echo=FALSE}
-data <- read.csv('cefic_matching_compounds.csv', stringsAsFactors = FALSE, header = TRUE, check.names=FALSE)
+data <- read.csv('data/cefic_matching_compounds.csv', stringsAsFactors = FALSE, header = TRUE, check.names=FALSE)
 knitr::kable((data), booktabs = TRUE,
-caption = 'Table 4.1: Cefic MATCHING unblinded test substances')
+caption = 'Table 5.1: Cefic MATCHING unblinded test substances')
 ```
 
 &nbsp;
 
 
-![Fig 4.1. Cefic MATCHING unblinded - summary](cefic_matching_compounds.png)
+![Fig 5.1. Cefic MATCHING unblinded - summary](cefic_matching_compounds.png)
 
 &nbsp;
 
-## Chemical grouping using structure only
+
+# t-stat - HCA - unblinded
+```{r HCA}
+tstats <- read.csv('data/combined_male_tstats.csv', row.names = 1)
+tstats_scaled <- scale(tstats, center=FALSE, scale=TRUE)
+
+
+library(pvclust)
+pvclust_res <- pvclust(tstats_scaled, method.hclust = "ward.D2", nboot=1000)
+
+
+  
+plot(pvclust_res, c("si", "au", "bp"), hang=-1)
+pp = pvpick(pvclust_res, alpha=0.05, pv="si", type="geq", max.only=TRUE)
+
+```
+
+
+
+# Chemical grouping using structure only
 
 <!-- ![Fig 4.2. Cefic MATCHING compound PCA (MACCS fingerprints)](cefic_matching_compounds_pca_maccs.png){width=400px} -->
 
 <!-- &nbsp; -->
 
-![Fig 4.2. Cefic MATCHING compound HCA (MACCS fingerprints)](cefic_matching_compounds_hca_maccs.png)
+![Fig 5.2. Cefic MATCHING compound HCA (MACCS fingerprints)](cefic_matching_compounds_hca_maccs.png)
 
 &nbsp;
+
+
 
 

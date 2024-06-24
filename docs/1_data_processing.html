@@ -435,6 +435,18 @@ suppression)</li>
 <div class="figcaption">Fig 1.2 LC-MS data</div>
 </div>
 <p> </p>
+<p>The UHPLC−MS approach used for our dataset consisited of four assays,
+comprising of two types of chromatography and two mass spectromety
+ionisation modes (positive and negative). The chromatographic columns
+being either a Hydrophilic Interaction Liquid “HILIC” column (primarily
+to measure polar metabolites) and a C18 column (primarily to measure
+lipids). These will be referred to as the following from now on:</p>
+<ul>
+<li>HILIC_POS</li>
+<li>HILIC_NEG</li>
+<li>LIPIDS_POS</li>
+<li>LIPIDS_NEG</li>
+</ul>
 </div>
 <div id="data-processing" class="section level1">
 <h1>Data processing</h1>
@@ -450,7 +462,7 @@ omics data matrix for grouping is beyond the scope of this tutorial.
 Instead we will work with a data matrix that has undergone standard
 processing to create a data matrices required for our analysis.</p>
 <p>In brief the following steps were performed:</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li>Conversion of the RAW mass spectrometry files to open source mzML
 format. And centroiding the full profile of the raw data</li>
 <li>Data reduction: Full scan (MS1) “peak picking”, grouping and any
@@ -462,11 +474,33 @@ rentiontion time correction performed by XCMS software</li>
 al. 2006)</li>
 <li>Missing value imputation (for multivaraite analysis only)</li>
 <li>glog transformations (for multivariate analysis only)</li>
-</ul>
+</ol>
 <p>The full details of the data processing methods are found in the <a
 href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10944399/bin/204_2024_3680_MOESM1_ESM.pdf">supplemental
 of Cefic MATCHING publication</a> <span class="citation">(<a
 href="#ref-viant2024demonstrating">Viant et al. 2024</a>)</span>.</p>
+<p>For this part of the tutorial we are going to look at the HILIC_POS
+assay as an example. And have included data files that contain both the
+metadata and data matrices for different stages of the data processing
+workflow for us to assess and then use for grouping.</p>
+<ul>
+<li><strong>HILIC_POS_male/0_sample_metadata.csv</strong> - Sample
+metadata prior to exclusion of any samples</li>
+<li><strong>HILIC_POS_male/0_sample_metadata_filtered.csv</strong> -
+Sample metadata with any samples removed</li>
+<li><strong>HILIC_POS_male/0_feature_metadata.csv</strong> - Feature
+metdata</li>
+<li><strong>HILIC_POS_male/1_unfiltered.csv</strong> - unfiltered
+intensity matrix</li>
+<li><strong>HILIC_POS_male/2_filtered.csv</strong> - filtered (both
+samples and features) intensity matrix</li>
+<li><strong>HILIC_POS_male/3_pqn.csv</strong> - PQN normalised intensity
+matrix</li>
+<li><strong>HILIC_POS_male/4_mv_imputed.csv</strong> - missing value
+imputed intensity matrix</li>
+<li><strong>HILIC_POS_male/5_glog.csv</strong> - glog intensity
+matrix</li>
+</ul>
 </div>
 <div id="reading-in-the-data" class="section level1">
 <h1>Reading in the data</h1>
@@ -477,31 +511,31 @@ the samples</p>
 <p>First we read in the the comma seperated file (.csv) using the
 <code>read.csv</code>. This will save the metadata as a
 <code>dataframe</code> R object.</p>
-<pre class="r"><code>sample_metadata &lt;- read.csv(&#39;female/reduced_sample_metadata.csv&#39;)</code></pre>
+<pre class="r"><code>sample_metadata_all &lt;- read.csv(&#39;data/HILIC_POS_male/0_sample_metadata.csv&#39;)</code></pre>
 <p>Lets have a quick look at the sample metadata. We can use the
 <code>head</code> function to just see the first few rows</p>
-<pre class="r"><code>head(sample_metadata)</code></pre>
-<pre><code>##                     Sanple_id ClassQC injection_order Batch          PCB_ID
-## 1             RP04_blank01_pp   Blank               6     1 RP04_blank01_pp
-## 2              RP04_isQC11_pp      QC              12     1  RP04_isQC11_pp
-## 3              RP04_isQC12_pp      QC              13     1  RP04_isQC12_pp
-## 4 RP04_TS5_DG1_f_rep04_144_pp  Sample              14     1            X144
-## 5 RP04_TS7_DG1_f_rep04_154_pp  Sample              15     1            X154
-## 6 RP04_TS4_DG2_f_rep04_139_pp  Sample              16     1            X139
-##   tube_barcode animal_number prep_batch prep_order test_substance   Sex
-## 1        Blank         Blank      Blank      Blank          Blank Blank
-## 2           QC            QC         QC         QC             QC    QC
-## 3           QC            QC         QC         QC             QC    QC
-## 4     12391938           144          1         20              5     F
-## 5     12391948           154          1         31              7     F
-## 6     12391933           139          1         36              4     F
-##   dose_group biol_rep pmp_factor batch_qc
-## 1      Blank    Blank      Blank    Blank
-## 2         QC       QC         QC       QC
-## 3         QC       QC         QC       QC
-## 4          1        4     Sample        1
-## 5          1        4     Sample        1
-## 6          2        4     Sample        1</code></pre>
+<pre class="r"><code>head(sample_metadata_all)</code></pre>
+<pre><code>##                   Sample_name  Class injection_order         PCB_ID
+## 1              RP04_isQC44_pp     QC             123 RP04_isQC44_pp
+## 2              RP04_isQC45_pp     QC             124 RP04_isQC45_pp
+## 3 RP04_TS5_DG1_m_rep01_051_pp Sample             125            X51
+## 4 RP04_TS8_DG2_m_rep01_076_pp Sample             126            X76
+## 5 RP04_TS7_DG1_m_rep01_061_pp Sample             127            X61
+## 6 RP04_TS4_DG1_m_rep01_041_pp Sample             128            X41
+##   tube_barcode animal_number prep_batch prep_order test_substance Sex
+## 1           QC            QC         QC         QC             QC  QC
+## 2           QC            QC         QC         QC             QC  QC
+## 3     12391845            51          2        115              5   M
+## 4     12391870            76          2        120              8   M
+## 5     12391855            61          2        111              7   M
+## 6     12391835            41          2        119              4   M
+##   Sex_binary dose_group biol_rep
+## 1         QC         QC       QC
+## 2         QC         QC       QC
+## 3          2          1        1
+## 4          2          2        1
+## 5          2          1        1
+## 6          2          1        1</code></pre>
 <p>We can use <code>View(sample_metadata)</code> in a more user friendly
 manner within RStudio where you can filter the columns</p>
 <p>The following information regarding independent variables for each
@@ -509,7 +543,7 @@ sample was available prior to unblinding:</p>
 <ul>
 <li>Test substances: TS1, TS2, TS3, TS4, TS5, TS7, TS8, TS9</li>
 <li>Doses: Low (1), High (2)</li>
-<li>Sex: Female</li>
+<li>Sex: Male</li>
 </ul>
 <p>(TS6 was excluded prior to exposures).</p>
 <p>Important to note here is that there are QC samples throughout the
@@ -533,25 +567,10 @@ purposes.</p>
 </div>
 <div id="intensity-data" class="section level2">
 <h2>Intensity data</h2>
-<p>The UHPLC−MS approach used for our dataset consisited of four assays,
-comprising of two types of chromatography and two mass spectromety
-ionisation modes (positive and negative). The chromatographic columns
-being either a Hydrophilic Interaction Liquid “HILIC” column (primarily
-to measure polar metabolites) and a C18 column (primarily to measure
-lipids). These will be referred to as the following from now on:</p>
-<ul>
-<li>HILIC_POS</li>
-<li>HILIC_NEG</li>
-<li>LIPIDS_POS</li>
-<li>LIPIDS_NEG</li>
-</ul>
 <p>Let’s just start with HILIC_POS for now and explore a typical
 metabolomics dataset. We will be using the pre-filtered and pre
 normalisation dataset for this initial check,</p>
-<p>We will use the <code>read.xlsx</code> function from
-<code>openxlsx</code> library to open up an excel file</p>
-<pre class="r"><code>library(openxlsx)
-hilic_pos_all &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;unfiltered&#39;)</code></pre>
+<pre class="r"><code>hilic_pos_all &lt;- read.csv(&#39;data/HILIC_POS_male/1_unfiltered.csv&#39;)</code></pre>
 <p>Again, <code>head(hilic_pos)</code> can be used for a quick check and
 <code>View(hilic_pos)</code> can be used to view in more detail.</p>
 <p>The first column is a reference to the <em>m/z</em> and retention
@@ -564,11 +583,11 @@ samp_c_all = ncol(hilic_pos_all)
 
 feature_c_all
 samp_c_all</code></pre>
-<pre><code>## [1] 12552
+<pre><code>## [1] 12123
 ## [1] 113</code></pre>
 <p>We can compare this the the filtered data matrix to see how many
 features have been removed</p>
-<pre class="r"><code>hilic_pos_f &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;filtered&#39;)</code></pre>
+<pre class="r"><code>hilic_pos_f &lt;- read.csv(&#39;data/HILIC_POS_male/2_filtered.csv&#39;)</code></pre>
 <p>For this dataset we should see that only 1 sample will be removed
 (the blank sample - as it is no longer required for furher analysis) and
 substantial number of the metabolite features will have been removed for
@@ -589,9 +608,9 @@ c(&#39;remaining features:&#39;, feature_c_f)</code></pre>
 <pre><code>## [1] &quot;All samples:&quot; &quot;113&quot;         
 ## [1] &quot;Samples removed:&quot; &quot;1&quot;               
 ## [1] &quot;Remaining samples:&quot; &quot;112&quot;               
-## [1] &quot;All features:&quot; &quot;12552&quot;        
-## [1] &quot;Features removed:&quot; &quot;4934&quot;             
-## [1] &quot;remaining features:&quot; &quot;7618&quot;</code></pre>
+## [1] &quot;All features:&quot; &quot;12123&quot;        
+## [1] &quot;Features removed:&quot; &quot;4797&quot;             
+## [1] &quot;remaining features:&quot; &quot;7326&quot;</code></pre>
 </div>
 <div id="feature-metadata" class="section level2">
 <h2>Feature metadata</h2>
@@ -601,19 +620,19 @@ complexity of the data and metabolite annotation there can often be alot
 of metadata associated with each feature</p>
 <p>Lets just check quickly have a look at the <em>m/z</em> and RT
 values!</p>
-<pre class="r"><code>feature_meta &lt;- read.xlsx(&#39;female/pmp_HILIC_POS.xlsx&#39;, sheet=&#39;variable_meta&#39;)
+<pre class="r"><code>feature_meta &lt;- read.csv(&#39;data/HILIC_POS_male/0_feature_metadata.csv&#39;)
 
 # only select a few columns
 feature_meta_reduced &lt;- feature_meta[,c(1, 3, 6)]
 
 head(feature_meta_reduced)</code></pre>
-<pre><code>##                 mz       rt
-## 1 M70T579 70.01252 578.5369
-## 2 M70T461 70.02880 460.5389
-## 3 M70T301 70.05929 300.7341
-## 4 M70T409 70.06516 408.6625
-## 5 M70T467 70.06520 466.6088
-## 6 M70T519 70.06517 519.4278</code></pre>
+<pre><code>##   feature_name          mz         rt
+## 1      M70T578 70.01248058 578.444712
+## 2      M70T460 70.02878878 460.364628
+## 3      M70T301 70.05927549 300.717252
+## 4      M70T519 70.06515683 519.282969
+## 5      M70T367 70.07326748 367.057464
+## 6      M70T336  70.2508749 336.279876</code></pre>
 <p>Now that we understand the processed data we can breifly explain the
 quality assessments before getting started on the statistical
 analysis.</p>
