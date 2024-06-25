@@ -388,9 +388,11 @@ biological activity).</p>
 <p>Here we will be looking at data that already been checked for data
 quality (including QC samples, outlier samples) and we are now assessing
 what we believe is valid bioactivity.</p>
+<p>First get root URL for data</p>
+<pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
 <pre class="r"><code># Read in the sample metadata and processed data matrix
-sample_metadata &lt;- read.csv(&#39;data/HILIC_POS_male/0_sample_metadata_filtered.csv&#39;)
-glog &lt;- read.csv(&#39;data/HILIC_POS_male/5_glog.csv&#39;)</code></pre>
+sample_metadata &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/0_sample_metadata_filtered.csv&#39;))
+glog &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/5_glog.csv&#39;))</code></pre>
 <p>First we need to remove the first column of the matrix which was used
 to record the feature names and is not required for this tutorial</p>
 <pre class="r"><code># Remove the feature names (not required for this analysis)
@@ -435,7 +437,7 @@ assessing samples from a specific condition against a control.</p>
 <p>We will be using the the PQN normalised intensity matrix for this
 analysis (so missing value imputation and glog has not bee applied to
 the matrix)</p>
-<pre class="r"><code>pqn &lt;- read.csv(&#39;data/HILIC_POS_male/3_pqn.csv&#39;)</code></pre>
+<pre class="r"><code>pqn &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/3_pqn.csv&#39;))</code></pre>
 <p>Lets start with doing a single t-test for one feature and one
 condition</p>
 <pre class="r"><code># Get all the control samples (i.e. all those with dose 0)

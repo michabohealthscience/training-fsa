@@ -504,6 +504,12 @@ matrix</li>
 </div>
 <div id="reading-in-the-data" class="section level1">
 <h1>Reading in the data</h1>
+<p>Before we read in any data we need to setup where we our getting the
+data from. If you have downloaded all the tutorial files already the set
+the working directory.</p>
+<p>Otherwise will download the data as we go using the following base
+URL</p>
+<pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
 <div id="sample-metadata" class="section level2">
 <h2>Sample metadata</h2>
 <p>So… lets finally read in some data. Let’s begin with the metadata for
@@ -511,7 +517,7 @@ the samples</p>
 <p>First we read in the the comma seperated file (.csv) using the
 <code>read.csv</code>. This will save the metadata as a
 <code>dataframe</code> R object.</p>
-<pre class="r"><code>sample_metadata_all &lt;- read.csv(&#39;data/HILIC_POS_male/0_sample_metadata.csv&#39;)</code></pre>
+<pre class="r"><code>sample_metadata_all &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/0_sample_metadata.csv&#39;))</code></pre>
 <p>Lets have a quick look at the sample metadata. We can use the
 <code>head</code> function to just see the first few rows</p>
 <pre class="r"><code>head(sample_metadata_all)</code></pre>
@@ -563,7 +569,7 @@ effect this might have on the metabolite profiles.</p>
 <p>Let’s just start with HILIC_POS for now and explore a typical
 metabolomics dataset. We will be using the pre-filtered and
 pre-normalisation dataset for this initial check,</p>
-<pre class="r"><code>hilic_pos_all &lt;- read.csv(&#39;data/HILIC_POS_male/1_unfiltered.csv&#39;)</code></pre>
+<pre class="r"><code>hilic_pos_all &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/1_unfiltered.csv&#39;))</code></pre>
 <p>Again, <code>head(hilic_pos)</code> can be used for a quick check and
 <code>View(hilic_pos)</code> can be used to view in more detail.</p>
 <p>The first column is a reference to the <em>m/z</em> and retention
@@ -580,7 +586,7 @@ samp_c_all</code></pre>
 ## [1] 112</code></pre>
 <p>We can compare this the the filtered data matrix to see how many
 features have been removed</p>
-<pre class="r"><code>hilic_pos_f &lt;- read.csv(&#39;data/HILIC_POS_male/2_filtered.csv&#39;)</code></pre>
+<pre class="r"><code>hilic_pos_f &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/2_filtered.csv&#39;))</code></pre>
 <p>For this dataset we should see that only 1 sample will be removed
 (the blank sample - as it is no longer required for furher analysis) and
 substantial number of the metabolite features will have been removed for
@@ -613,7 +619,7 @@ complexity of the data and metabolite annotation there can often be alot
 of metadata associated with each feature</p>
 <p>Lets just check quickly have a look at the <em>m/z</em> and RT
 values!</p>
-<pre class="r"><code>feature_meta &lt;- read.csv(&#39;data/HILIC_POS_male/0_feature_metadata.csv&#39;)
+<pre class="r"><code>feature_meta &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/0_feature_metadata.csv&#39;))
 
 # only select a few columns
 feature_meta_reduced &lt;- feature_meta[,c(1, 3, 6)]

@@ -20,8 +20,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Compound and mode of action details
 
+First get root URL for data
+```{r root_dir_url}
+root <- 'https://raw.githubusercontent.com/michabohealthscience/training-fsa/main'
+```
+
+
+```{r root_dir, echo=FALSE}
+root <- '.'
+```
+
+
+
 ```{r table, tidy=FALSE, echo=FALSE}
-data <- read.csv('data/cefic_matching_compounds.csv', stringsAsFactors = FALSE, header = TRUE, check.names=FALSE)
+data <- read.csv(file.path(root, 'data/cefic_matching_compounds.csv'), stringsAsFactors = FALSE, header = TRUE, check.names=FALSE)
 knitr::kable((data), booktabs = TRUE,
 caption = 'Table 5.1: Cefic MATCHING unblinded test substances')
 ```

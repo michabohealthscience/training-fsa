@@ -357,7 +357,9 @@ div.tocify {
 <h1>t-statistic grouping</h1>
 <p>The Michabo Health Science workflow chemical grouping uses the
 control vs condition t-statistics as input.</p>
-<pre class="r"><code>tstats &lt;- read.csv(&#39;data/combined_male_tstats.csv&#39;, row.names = 1)</code></pre>
+<p>First get root URL for data</p>
+<pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
+<pre class="r"><code>tstats &lt;- read.csv(file.path(root, &#39;data/combined_male_tstats.csv&#39;), row.names = 1)</code></pre>
 </div>
 <div id="vector-normalisation-for-each-condition-scaling"
 class="section level1">

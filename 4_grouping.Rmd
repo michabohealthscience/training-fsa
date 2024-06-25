@@ -21,8 +21,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The Michabo Health Science workflow chemical grouping uses the control vs condition t-statistics as input. 
 
+
+First get root URL for data
+```{r root_dir_url}
+root <- 'https://raw.githubusercontent.com/michabohealthscience/training-fsa/main'
+```
+
+
+```{r root_dir, echo=FALSE}
+root <- '.'
+```
+
+
 ```{r read_in_data_grouping}
-tstats <- read.csv('data/combined_male_tstats.csv', row.names = 1)
+tstats <- read.csv(file.path(root, 'data/combined_male_tstats.csv'), row.names = 1)
 
 
 ```

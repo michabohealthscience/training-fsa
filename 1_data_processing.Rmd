@@ -99,6 +99,20 @@ For this part of the tutorial we are going to look at the HILIC_POS assay as an 
 
 # Reading in the data
 
+Before we read in any data we need to setup where we our getting the data from. If you have downloaded all the tutorial files already the set the working directory.
+
+Otherwise will download the data as we go using the following base URL
+
+```{r root_dir_url}
+root <- 'https://raw.githubusercontent.com/michabohealthscience/training-fsa/main'
+```
+
+
+```{r root_dir, echo=FALSE}
+root <- '.'
+```
+
+
 ## Sample metadata
 So... lets finally read in some data. Let's begin with the metadata for the samples
 
@@ -106,7 +120,7 @@ First we read in the the comma seperated file (.csv) using the `read.csv`. This 
 the metadata as a `dataframe` R object.
 
 ```{r sample_metadata}
-sample_metadata_all <- read.csv('data/HILIC_POS_male/0_sample_metadata.csv')
+sample_metadata_all <- read.csv(file.path(root, 'data/HILIC_POS_male/0_sample_metadata.csv'))
 
 ```
 
@@ -143,8 +157,7 @@ Let's just start with HILIC_POS for now and explore a typical metabolomics datas
 
 
 ```{r hilic_pos_intensity_unfiltered}
-hilic_pos_all <- read.csv('data/HILIC_POS_male/1_unfiltered.csv')
-
+hilic_pos_all <- read.csv(file.path(root, 'data/HILIC_POS_male/1_unfiltered.csv'))
 ```
 
 Again, `head(hilic_pos)` can be used for a quick check and `View(hilic_pos)` can be used to view in more detail.
@@ -165,7 +178,7 @@ samp_c_all
 ```
 We can compare this the the filtered data matrix to see how many features have been removed
 ```{r hilic_pos_intensity_filtered, results = "hold"}
-hilic_pos_f <- read.csv('data/HILIC_POS_male/2_filtered.csv')
+hilic_pos_f <- read.csv(file.path(root, 'data/HILIC_POS_male/2_filtered.csv'))
 ```
 
 For this dataset we should see that only 1 sample will be removed (the blank sample - as it is no longer required for furher analysis) and substantial number of the metabolite features will have been removed for subsequent analysis.
@@ -199,7 +212,7 @@ Lets just check quickly have a look at the *m/z* and RT values!
 
 
 ```{r hilic_pos_feature_metadata}
-feature_meta <- read.csv('data/HILIC_POS_male/0_feature_metadata.csv')
+feature_meta <- read.csv(file.path(root, 'data/HILIC_POS_male/0_feature_metadata.csv'))
 
 # only select a few columns
 feature_meta_reduced <- feature_meta[,c(1, 3, 6)]

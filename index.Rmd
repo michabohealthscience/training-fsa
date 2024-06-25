@@ -38,7 +38,11 @@ The tutorial can be followed from html files previous sent in the email or from 
 - https://michabohealthscience.github.io/training-fsa/
 
 
-## Metabolomics
+## R setup and local files
+
+
+
+## Metabolomics 
 
 This tutorial will be using metabolomics data however the same principals can (and have been) applied to other Omics data (i.e. transcripomics - ref Azo dye paper).
 
@@ -54,19 +58,20 @@ https://www.nature.com/articles/s41592-021-01197-1/figures/1
 
 
 
+
+
 ## Training sections
 
 The training will involve four stages
 
 1. [Data processing](1_data_processing.html) - where an example Omics dataset will be introduced and pre-processed data will be imported into R. Using data from the Cefic MATCHING project [@viant2024demonstrating]
-2. [Quality assessments](2_qa.html) - xxx
+2. [Quality assessments](2_qa.html) - A breif note on quality assessments 
 3. [Differentially abundant molecules - statistical analysis](3_stats.html) - Assess the bioactivity of the dataset and generate the input for the grouping
-4. [Grouping](4_grouping.html)  - Where the univariate results will be used to perform a grouping of test substances
+4. [Grouping](4_grouping.html)  - Where the univariate statistical results will be used to perform a grouping of test substances
 5. [Unblinding!](5_unblinding.html) - Where we find out if our grouping matches the known mode of actions of our test substances
 6. [Further details](6_more_info.html) - Further details for different parts of the workflow
 
 
-Todo - perhaps add workflow to show where this part of the analysis fits into a standard omics / metabolomics analysis?
-     - Mention OORF?
+
 
 ## References
