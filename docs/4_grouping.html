@@ -355,8 +355,12 @@ div.tocify {
 
 <div id="t-statistic-grouping" class="section level1">
 <h1>t-statistic grouping</h1>
-<p>The Michabo Health Science workflow chemical grouping uses the
-control vs condition t-statistics as input.</p>
+<p>We have finally made it to the grouping!</p>
+<p>For the Michabo Health Science workflow grouping we use the
+t-statistic calculated from the previous section.</p>
+<p>The benefit of using the t-statistic rather than for example the fold
+change is that variance is considered when comparing the means of the
+control and treated samples.</p>
 <p>First get root URL for data</p>
 <pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
 <pre class="r"><code>tstats &lt;- read.csv(file.path(root, &#39;data/combined_male_tstats.csv&#39;), row.names = 1)</code></pre>
@@ -369,7 +373,7 @@ class="section level1">
 <div id="t-stat---hca" class="section level1">
 <h1>t-stat - HCA</h1>
 <pre class="r"><code>library(pvclust)
-pvclust_res &lt;- pvclust(tstats_scaled, method.hclust = &quot;ward.D2&quot;, nboot=100)</code></pre>
+pvclust_res &lt;- pvclust(tstats_scaled, method.dist=&quot;euclidean&quot;, method.hclust = &quot;ward.D2&quot;, nboot=100)</code></pre>
 <pre><code>## Bootstrap (r = 0.5)... Done.
 ## Bootstrap (r = 0.6)... Done.
 ## Bootstrap (r = 0.7)... Done.
@@ -382,7 +386,6 @@ pvclust_res &lt;- pvclust(tstats_scaled, method.hclust = &quot;ward.D2&quot;, nb
 ## Bootstrap (r = 1.4)... Done.</code></pre>
 <pre class="r"><code>plot(pvclust_res, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)</code></pre>
 <p><img src="4_grouping_files/figure-html/HCA-1.png" width="672" /></p>
-<pre class="r"><code>pp = pvpick(pvclust_res, alpha=0.05, pv=&quot;si&quot;, type=&quot;geq&quot;, max.only=TRUE)</code></pre>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

@@ -37,8 +37,6 @@ We can unblind at the end of the tutorial (but if you can't wait go straight to 
 
 Mass spectrometry coupled liquid chromatography (in particular high-resolution mass spectrometry with Ultra-high-performance liquid chromatography - UHPLC-MS) is an effective and popular approach for metabolomics and is what was used for data we are using for this tutorial. 
 
-Gas-phase mass spectrometry based fragmentation was also collected for metabolite annotation purposes, however that is not covered within this tutorial.
-
 Full details of the methods found in the [supplemental of Cefic MATCHING publication](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10944399/bin/204_2024_3680_MOESM1_ESM.pdf) [@viant2024demonstrating].
 
 The raw data collected from UHPLC-MS and LC-MS more generally can be thought of within 3 dimensions. 

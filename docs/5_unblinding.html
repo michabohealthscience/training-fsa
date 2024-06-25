@@ -360,11 +360,12 @@ div.tocify {
 <table>
 <caption>Table 5.1: Cefic MATCHING unblinded test substances</caption>
 <colgroup>
-<col width="4%" />
-<col width="30%" />
+<col width="3%" />
+<col width="21%" />
+<col width="8%" />
+<col width="25%" />
 <col width="12%" />
-<col width="35%" />
-<col width="17%" />
+<col width="28%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -373,6 +374,7 @@ div.tocify {
 <th align="left">CAS No.</th>
 <th align="left">MOA</th>
 <th align="left">Effect strength</th>
+<th align="left">Label name</th>
 </tr>
 </thead>
 <tbody>
@@ -382,6 +384,7 @@ div.tocify {
 <td align="left">50892-23-4</td>
 <td align="left">Peroxisome proliferation (PP)</td>
 <td align="left">Strong</td>
+<td align="left">Wy 14643 (PP +++)</td>
 </tr>
 <tr class="even">
 <td align="left">TS7</td>
@@ -389,6 +392,7 @@ div.tocify {
 <td align="left">15165-67-0</td>
 <td align="left">Peroxisome proliferation (PP)</td>
 <td align="left">Moderate</td>
+<td align="left">Dichlorprop-p (PP ++)</td>
 </tr>
 <tr class="odd">
 <td align="left">TS9</td>
@@ -396,6 +400,7 @@ div.tocify {
 <td align="left">49562-28-9</td>
 <td align="left">Peroxisome proliferation (PP)</td>
 <td align="left">Strong</td>
+<td align="left">Fenofibrate (PP +++)</td>
 </tr>
 <tr class="even">
 <td align="left">TS3</td>
@@ -403,6 +408,7 @@ div.tocify {
 <td align="left">58-18-4</td>
 <td align="left">Androgen receptor activity (AR)</td>
 <td align="left">Strong</td>
+<td align="left">17-alpha-Methyltestosterone (AR +++)</td>
 </tr>
 <tr class="odd">
 <td align="left">TS4</td>
@@ -410,6 +416,7 @@ div.tocify {
 <td align="left">10161-33-8</td>
 <td align="left">Androgen receptor activity (AR)</td>
 <td align="left">Strong</td>
+<td align="left">Trenbolone (AR +++)</td>
 </tr>
 <tr class="even">
 <td align="left">TS2</td>
@@ -417,6 +424,7 @@ div.tocify {
 <td align="left">635-22-3</td>
 <td align="left">Anemia</td>
 <td align="left">Moderate</td>
+<td align="left">4-Chloro-3-nitroaniline (Anemia ++)</td>
 </tr>
 <tr class="odd">
 <td align="left">TS5</td>
@@ -424,6 +432,7 @@ div.tocify {
 <td align="left">62-53-3</td>
 <td align="left">Anemia</td>
 <td align="left">Moderate</td>
+<td align="left">Aniline (Anemia ++)</td>
 </tr>
 <tr class="even">
 <td align="left">TS8</td>
@@ -431,6 +440,7 @@ div.tocify {
 <td align="left">95-51-2</td>
 <td align="left">Anemia</td>
 <td align="left">Weak</td>
+<td align="left">2-Chloroaniline (Anemia +)</td>
 </tr>
 </tbody>
 </table>
@@ -445,22 +455,65 @@ summary</div>
 </div>
 <div id="t-stat---hca---unblinded" class="section level1">
 <h1>t-stat - HCA - unblinded</h1>
-<pre class="r"><code># tstats &lt;- read.csv(&#39;data/combined_male_tstats.csv&#39;, row.names = 1)
-# tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)
-# 
-# 
-# library(pvclust)
-# pvclust_res &lt;- pvclust(tstats_scaled, method.hclust = &quot;ward.D2&quot;, nboot=1000)
-# 
-# 
-#   
-# plot(pvclust_res, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)
-# pp = pvpick(pvclust_res, alpha=0.05, pv=&quot;si&quot;, type=&quot;geq&quot;, max.only=TRUE)</code></pre>
+<pre class="r"><code>library(pvclust)
+tstats &lt;- read.csv(&#39;data/combined_male_tstats.csv&#39;, row.names = 1)
+unblinded_names &lt;- read.csv(file.path(root, &#39;data/unblinded_ordered_names.csv&#39;), header = TRUE)
+colnames(tstats) &lt;- unblinded_names$full_label
+
+tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)
+
+pvclust_res &lt;- pvclust(tstats_scaled, method.dist=&quot;euclidean&quot;, method.hclust = &quot;ward.D2&quot;,  nboot=100)</code></pre>
+<pre><code>## Bootstrap (r = 0.5)... Done.
+## Bootstrap (r = 0.6)... Done.
+## Bootstrap (r = 0.7)... Done.
+## Bootstrap (r = 0.8)... Done.
+## Bootstrap (r = 0.9)... Done.
+## Bootstrap (r = 1.0)... Done.
+## Bootstrap (r = 1.1)... Done.
+## Bootstrap (r = 1.2)... Done.
+## Bootstrap (r = 1.3)... Done.
+## Bootstrap (r = 1.4)... Done.</code></pre>
+<pre class="r"><code>plot(pvclust_res, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)</code></pre>
+<p><img src="5_unblinding_files/figure-html/HCA-1.png" width="768" /></p>
+</div>
+<div id="t-stat---pca---unblinded" class="section level1">
+<h1>t-stat - PCA - unblinded</h1>
+<p>We can also represent the data using PCA</p>
+<pre class="r"><code>library(ggplot2)
+# transpose as features should be columns
+tstats_scaled_t &lt;- data.frame(t(tstats_scaled))
+
+# Simply giving missing values a value of zero (but in practice this should be looked into more
+# closely and missing value imputed approaches can be used
+tstats_scaled_t[is.na(tstats_scaled_t)] &lt;- 0
+
+# remove features with no response
+tstats_scaled_t_rm0 &lt;- tstats_scaled_t[, colSums(tstats_scaled_t != 0) &gt; 0]
+
+# Run PCA
+pca_tstats &lt;- prcomp(tstats_scaled_t_rm0, center = TRUE, scale. = TRUE)
+summ &lt;- summary(pca_tstats)
+tstats_scaled_t_rm0$full_label &lt;- rownames(tstats_scaled_t_rm0)
+
+pca_df &lt;- data.frame(cbind(pca_tstats$x[,1:2], unblinded_names))
+
+# Plot the PCA
+ggplot(pca_df, aes(PC1, PC2, color=moa, label=moa)) + 
+   geom_text(aes(label = compound_name_dose), hjust = 0.5,  vjust = -1) +
+   geom_point(aes(color=moa)) +
+   stat_ellipse(geom = &quot;polygon&quot;, aes(fill = after_scale(alpha(colour, 0.3))))+
+   scale_colour_manual(values=c(&quot;orange&quot;,&quot;black&quot;,&quot;blue&quot;))+
+   xlab(paste(&quot;PC1 (&quot;, round(summ$importance[2,1]*100,1), &quot;%)&quot;, sep=&#39;&#39;)) +
+   ylab(paste(&quot;PC2 (&quot;, round(summ$importance[2,2]*100,1), &quot;%)&quot;, sep=&#39;&#39;)) +
+    
+   theme_bw()</code></pre>
+<p><img src="5_unblinding_files/figure-html/PCA-1.png" width="768" /></p>
 </div>
 <div id="chemical-grouping-using-structure-only" class="section level1">
 <h1>Chemical grouping using structure only</h1>
-<!-- ![Fig 4.2. Cefic MATCHING compound PCA (MACCS fingerprints)](cefic_matching_compounds_pca_maccs.png){width=400px} -->
-<!-- &nbsp; -->
+<p>Lets compare this with the grouping using chemical structure only.
+See below for the same HCA approach but instead of using t-statistics
+for the grouping we are using</p>
 <div class="float">
 <img src="cefic_matching_compounds_hca_maccs.png"
 alt="Fig 5.2. Cefic MATCHING compound HCA (MACCS fingerprints)" />

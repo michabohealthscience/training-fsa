@@ -424,9 +424,8 @@ autoplot(pca_no_qcs, x=1, y=2, data=sample_metadata_no_qcs, colour=&quot;test_su
 <p><img src="3_stats_files/figure-html/hilic_pos_glog_pca_plot-1.png" width="672" /></p>
 <blockquote>
 <p>Whilst the above is useful and we can begin to see groups emerging -
-we are really interested in how similar each test substance compared to
-the control. So lets perform comparisons to the control for each
-condition</p>
+we are really interested in how similar each test substance treatment is
+compared to the control. So let’s look at that in more detail</p>
 </blockquote>
 </div>
 <div id="student-t-test" class="section level1">
@@ -464,17 +463,27 @@ ttest_out</code></pre>
 ## sample estimates:
 ## mean of x mean of y 
 ##   5568546  15288006</code></pre>
-<p>There are two values we will use later from the from the t-test</p>
+<p>There two key metrics we use are the</p>
 <ul>
 <li><strong>t-statistic (or t-value)</strong></li>
 <li><strong>p-value</strong></li>
 </ul>
 <p>We can use a a few <code>for loops</code> in a <code>function</code>
-to calculate this for all features for a specific test substance.</p>
-<p>Note there are multiple ways to acheive this, for loops are
-straightforward approach that do not require many additional packages
-however other functions and packages (like plyr and tidyr) can be
-used.</p>
+to calculate this for all features for a specific test substance. In
+addition we can calculate the fold change of the mean of treated samples
+Vs the mean of the control samples.</p>
+<blockquote>
+<p><strong>For those new to R and/or programming</strong> - please don’t
+worry about the inner workings of this function!! All it is doing is
+running multiple t-tests for each feature and condition.</p>
+</blockquote>
+<blockquote>
+<p><strong>For those who are more experienced in R</strong> - you might
+be aware that there are multiple ways to achieve the function, for loops
+are just a straightforward approach that do not require many additional
+packages however other functions and packages (like plyr and tidyr) can
+be used to acheive the same result.</p>
+</blockquote>
 <pre class="r"><code>library(reshape2)
 
 ttest_per_test_substance &lt;- function(pqn, sample_metadata, test_substance=2){
@@ -586,19 +595,18 @@ ggplot(data=ttest_ts2, aes(x=log2(fc), y=-log10(qvalue), col=diff)) +
 </div>
 <div id="summary-of-t-tests" class="section level1">
 <h1>Summary of t-tests</h1>
-<p>Rather than do this on all the test substances and all assays in this
-training we have a data file already created with the relevant t-stats
-that we can use for grouping in the next section.</p>
+<p>Rather than repeating this on all the test substances and all assays
+in this training we have a data file already created with the relevant
+t-stats that we can use for grouping in the next section.</p>
 <p>Below though we show a summary of all the t-test analysis done across
-all assays and</p>
-<p>We note here that <strong>multiple testing correction</strong> was
-performed on the p-values to generate q-values.</p>
+all assays.</p>
 <p>This was used as manual check to see if any of the test substance
 treatments were not exhibiting much bioactivity and a such should not be
 included in the grouping analysis.</p>
-<p>It was deemed that for the male data, there was enough bioactivity to
-proceed to grouping without removing any test substance treatments. For
-the the female data however, treatment groups were removed (TSx)</p>
+<p>Following a review of the data. It was deemed that for the male
+component, there was sufficient bioactivity to proceed to grouping
+without removing any test substance treatments. For the the female data
+however, treatment groups were removed.</p>
 <p><img src="ttest_summary.png" /></p>
 </div>
 <div id="references" class="section level1">

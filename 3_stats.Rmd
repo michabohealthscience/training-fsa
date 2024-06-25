@@ -108,7 +108,7 @@ autoplot(pca_no_qcs, x=1, y=2, data=sample_metadata_no_qcs, colour="test_substan
 ```
 
 
-> Whilst the above is useful and we can begin to see groups emerging - we are really interested in how similar each test substance compared to the control. So lets perform comparisons to the control for each condition
+> Whilst the above is useful and we can begin to see groups emerging - we are really interested in how similar each test substance treatment is compared to the control. So let's look at that in more detail
 
 
 
@@ -145,15 +145,18 @@ ttest_out <- t.test(f2000[,control_samples], f2000[,ts1_dose_2_samples])
 ttest_out
 ```
 
-There are two values we will use later from the from the t-test
+There two key metrics we use are the
 
 * **t-statistic (or t-value)**
 * **p-value**
 
 
-We can use a a few `for loops` in a `function` to calculate this for all features for a specific test substance.
+We can use a a few `for loops` in a `function` to calculate this for all features for a specific test substance. In addition we can calculate
+the fold change of the mean of treated samples Vs the mean of the control samples.
 
-Note there are multiple ways to acheive this, for loops are straightforward approach that do not require many additional packages however other functions and packages (like plyr and tidyr) can be used.
+> **For those new to R and/or programming** - please don't worry about the inner workings of this function!! All it is doing is running multiple t-tests for each feature and condition. 
+
+> **For those who are more experienced in R** - you might be aware that there are multiple ways to achieve the function, for loops are just a straightforward approach that do not require many additional packages however other functions and packages (like plyr and tidyr) can be used to acheive the same result. 
 
 ```{r t-test_data_one_assay}
 library(reshape2)
@@ -263,15 +266,13 @@ ggplot(data=ttest_ts2, aes(x=log2(fc), y=-log10(qvalue), col=diff)) +
 
 
 # Summary of t-tests
-Rather than do this on all the test substances and all assays in this training we have a data file already created with the relevant t-stats that we can use for grouping in the next section.
+Rather than repeating this on all the test substances and all assays in this training we have a data file already created with the relevant t-stats that we can use for grouping in the next section.
 
-Below though we show a summary of all the t-test analysis done across all assays and 
-
-We note here that **multiple testing correction** was performed on the p-values to generate q-values. 
+Below though we show a summary of all the t-test analysis done across all assays.
 
 This was used as manual check to see if any of the test substance treatments were not exhibiting much bioactivity and a such should not be included in the grouping analysis.
 
-It was deemed that for the male data, there was enough bioactivity to proceed to grouping without removing any test substance treatments. For the the female data however, treatment groups were removed (TSx)
+Following a review of the data. It was deemed that for the male component, there was sufficient bioactivity to proceed to grouping without removing any test substance treatments. For the the female data however, treatment groups were removed.
 
 
 ![](ttest_summary.png)
