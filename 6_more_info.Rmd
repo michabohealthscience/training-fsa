@@ -20,16 +20,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Data processing further details
 
-The following steps were performed :
+In brief the following steps were performed:
 
 1. Conversion of the RAW mass spectrometry files to open source mzML format. And centroiding the full profile of the raw data
 2. Data reduction: Full scan (MS1) "peak picking", grouping and any rentiontion time correction performed by XCMS software
 3. Feature intensity drift and/or batch correction
 4. Identification and removal ("filtering") of features 
 5. Identification and removal ("filtering") of outlying samples
-6. Normalisation: Using PQN median samples as reference (Dieterle et al. 2006)
+6. Normalisation: Using PQN median samples as reference
 7. Missing value imputation (for multivaraite analysis only)
 9. glog transformations (for multivariate analysis only)
 
-Noting that for multivariate analysis the methodology would tyically undergo an missing value imputation and glog transfromations in addition to the above. However, we won't be considering multivariate analysis on the intensity data for the analysis today.
+
+The full details of the data processing methods are found in the [supplemental of Cefic MATCHING publication](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10944399/bin/204_2024_3680_MOESM1_ESM.pdf) [@viant2024demonstrating].
+
+The HILIC_POS assay for male rodents was used as an example for this practical with the following relevant data files for the training available on 
+the github site:
+
+* **HILIC_POS_male/0_sample_metadata.csv**  - Sample metadata prior to exclusion of any samples
+* **HILIC_POS_male/0_sample_metadata_filtered.csv** - Sample metadata with any samples removed
+* **HILIC_POS_male/0_feature_metadata.csv** - Feature metdata
+* **HILIC_POS_male/1_unfiltered.csv** - unfiltered intensity matrix
+* **HILIC_POS_male/2_filtered.csv** - filtered (both samples and features) intensity matrix
+* **HILIC_POS_male/3_pqn.csv** - PQN normalised intensity matrix
+* **HILIC_POS_male/4_mv_imputed.csv** - missing value imputed intensity matrix
+* **HILIC_POS_male/5_glog.csv** - glog intensity matrix
+
 

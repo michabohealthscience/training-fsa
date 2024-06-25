@@ -267,19 +267,19 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="1_data_processing.html">(1) Data processing</a>
+  <a href="1_data.html">(1) Data</a>
 </li>
 <li>
-  <a href="2_qa.html">(2) QA</a>
+  <a href="2_data_processing.html">(2) Data processing</a>
 </li>
 <li>
-  <a href="3_stats.html">(3) Differentially abundant molecules - statistical analysis</a>
+  <a href="3_qa.html">(3) QA</a>
 </li>
 <li>
-  <a href="4_grouping.html">(4) Grouping</a>
+  <a href="4_stats.html">(4) Differentially abundant molecules - statistical analysis</a>
 </li>
 <li>
-  <a href="5_unblinding.html">(5) Unblinding</a>
+  <a href="5_grouping.html">(5) Grouping</a>
 </li>
 <li>
   <a href="6_more_info.html">(6) More info</a>
@@ -319,60 +319,51 @@ Science Limited, and run within R (and R studio) which should be
 installed on the trainees local computer.</p>
 <p>Working individually or in pairs, attendees will self-pace their
 progress through the training material and example data provided.</p>
-<p>Data files will be available from a prior email or you can download
-from here</p>
-<ul>
-<li><a href="https://github.com/michabohealthscience/training-fsa/data"
-class="uri">https://github.com/michabohealthscience/training-fsa/data</a></li>
-</ul>
-<p>The tutorial can be followed from html files previous sent in the
-email or from the following link</p>
+<p>The tutorial should be followed from the link below:</p>
 <ul>
 <li><a href="https://michabohealthscience.github.io/training-fsa/"
 class="uri">https://michabohealthscience.github.io/training-fsa/</a></li>
 </ul>
-</div>
-<div id="r-setup-and-local-files" class="section level2">
-<h2>R setup and local files</h2>
-</div>
-<div id="metabolomics" class="section level2">
-<h2>Metabolomics</h2>
-<p>This tutorial will be using metabolomics data however the same
-principals can (and have been) applied to other Omics data
-(i.e. transcripomics - ref Azo dye paper).</p>
-<p>As a quick summary we are referring to the metabolome as the total
-collection of endogenous metabolites in a cell/tissue/organism. We refer
-to endogous metabolites being both xxx and lipid compounds.</p>
-<p>todo - add Metabolomics figure summary.</p>
-<p>A number of good overviews are available for this [ref 1], [ref
-2]</p>
-<p><a
-href="https://www.nature.com/articles/s41592-021-01197-1/figures/1"
-class="uri">https://www.nature.com/articles/s41592-021-01197-1/figures/1</a></p>
+<p>Data is downloaded as we go through the tutorial. However all the
+materials including code and and data is available on Github as
+well:</p>
+<ul>
+<li><a href="https://github.com/michabohealthscience/training-fsa/"
+class="uri">https://github.com/michabohealthscience/training-fsa/</a></li>
+</ul>
 </div>
 <div id="training-sections" class="section level2">
 <h2>Training sections</h2>
-<p>The training will involve four stages</p>
+<p>The training has five stages</p>
 <ol style="list-style-type: decimal">
-<li><a href="1_data_processing.html">Data processing</a> - where an
-example Omics dataset will be introduced and pre-processed data will be
-imported into R. Using data from the Cefic MATCHING project <span
+<li><a href="1_data.html">Data</a> - Where we introduce the example
+omics dataset we are using from the Cefic MATCHING project <span
 class="citation">(<a href="#ref-viant2024demonstrating">Viant et al.
-2024</a>)</span></li>
-<li><a href="2_qa.html">Quality assessments</a> - A breif note on
-quality assessments</li>
-<li><a href="3_stats.html">Differentially abundant molecules -
-statistical analysis</a> - Assess the bioactivity of the dataset and
-generate the input for the grouping</li>
-<li><a href="4_grouping.html">Grouping</a> - Where the univariate
-statistical results will be used to perform a grouping of test
-substances</li>
-<li><a href="5_unblinding.html">Unblinding!</a> - Where we find out if
-our grouping matches the known mode of actions of our test
-substances</li>
-<li><a href="6_more_info.html">Further details</a> - Further details for
-different parts of the workflow</li>
+2024</a>)</span> <strong>(15 minutes)</strong></li>
+<li><a href="2_data_processing.html">Data processing</a> - Where we read
+in the processed dataset <span class="citation">(<a
+href="#ref-viant2024demonstrating">Viant et al. 2024</a>)</span>
+<strong>(15 minutes)</strong></li>
+<li><a href="3_qa.html">Quality assessments</a> - A brief note on
+quality assessments <strong>(5 minutes)</strong></li>
+<li><a href="4_stats.html">Differentially abundant molecules -
+statistical analysis</a> - Where we assess the bioactivity of the
+dataset and generate the input for the grouping <strong>(20
+minutes)</strong></li>
+<li><a href="5_grouping.html">Grouping</a> - Where we use metrics
+generated from the univariate statistical analysis from the prior step
+to perform grouping <strong>(30 minutes)</strong></li>
+<li><a href="6_more_info.html">More info</a> - Further details for those
+that are interested.</li>
 </ol>
+</div>
+<div id="r-and-r-studio" class="section level2">
+<h2>R (and R Studio)</h2>
+<p>R (and R Studio) with the majority of the packages should already be
+pre-installed on all the trainees computers.</p>
+<p>See below for a reminder of the different panels will be using in R
+Studio today</p>
+<p><img src="Rstudio.png" alt="Fig 2. RStudio panels" />  </p>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
