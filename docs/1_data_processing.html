@@ -515,7 +515,7 @@ the samples</p>
 <p>Lets have a quick look at the sample metadata. We can use the
 <code>head</code> function to just see the first few rows</p>
 <pre class="r"><code>head(sample_metadata_all)</code></pre>
-<pre><code>##                   Sample_name  Class injection_order         PCB_ID
+<pre><code>##                   sample_name  Class injection_order         PCB_ID
 ## 1              RP04_isQC44_pp     QC             123 RP04_isQC44_pp
 ## 2              RP04_isQC45_pp     QC             124 RP04_isQC45_pp
 ## 3 RP04_TS5_DG1_m_rep01_051_pp Sample             125            X51
@@ -550,26 +550,19 @@ sample was available prior to unblinding:</p>
 run. We will touch briefly on this later. All other samples are
 distributed randomly across the run (to help counteract any drift
 effects across the UHPLC−MS run).</p>
-<p>For each test_substance and dose there should be 4 biological
-replicates (i.e. 4 samples) for this dataset there is 1 technical
+<p>For each test_substance and dose there should be 5 biological
+replicates (i.e. 5 samples) for this dataset there is 1 technical
 replicate for each sample.</p>
 <p>The ‘prep order’ refers to the preparation of the samples
 (i.e. metabolite extraction), like the run order, the preparation order
 should be randomized across the samples to help counteract any bias
 effect this might have on the metabolite profiles.</p>
-<blockquote>
-<p>Note this sample list is missing two other types of sample used in
-this dataset. ‘blank’ samples - used to remove background features and
-noise (e.g. from solvents used in the assay) and another type of pooled
-QC sample that was specifically collected for metabolite annotation
-purposes.</p>
-</blockquote>
 </div>
 <div id="intensity-data" class="section level2">
 <h2>Intensity data</h2>
 <p>Let’s just start with HILIC_POS for now and explore a typical
-metabolomics dataset. We will be using the pre-filtered and pre
-normalisation dataset for this initial check,</p>
+metabolomics dataset. We will be using the pre-filtered and
+pre-normalisation dataset for this initial check,</p>
 <pre class="r"><code>hilic_pos_all &lt;- read.csv(&#39;data/HILIC_POS_male/1_unfiltered.csv&#39;)</code></pre>
 <p>Again, <code>head(hilic_pos)</code> can be used for a quick check and
 <code>View(hilic_pos)</code> can be used to view in more detail.</p>
@@ -579,12 +572,12 @@ time of a feature and the columns are the samples.</p>
 <pre class="r"><code># feature count
 feature_c_all = nrow(hilic_pos_all)
 # sample count
-samp_c_all = ncol(hilic_pos_all)
+samp_c_all = ncol(hilic_pos_all)-1
 
 feature_c_all
 samp_c_all</code></pre>
 <pre><code>## [1] 12123
-## [1] 113</code></pre>
+## [1] 112</code></pre>
 <p>We can compare this the the filtered data matrix to see how many
 features have been removed</p>
 <pre class="r"><code>hilic_pos_f &lt;- read.csv(&#39;data/HILIC_POS_male/2_filtered.csv&#39;)</code></pre>
@@ -595,7 +588,7 @@ subsequent analysis.</p>
 <pre class="r"><code># feature count
 feature_c_f = nrow(hilic_pos_f)
 # sample count
-samp_c_f = ncol(hilic_pos_f)
+samp_c_f = ncol(hilic_pos_f)-1
 
 
 c(&#39;All samples:&#39;, samp_c_all)
@@ -605,9 +598,9 @@ c(&#39;Remaining samples:&#39;, samp_c_f)
 c(&#39;All features:&#39;, feature_c_all)
 c(&#39;Features removed:&#39;, feature_c_all-feature_c_f)
 c(&#39;remaining features:&#39;, feature_c_f)</code></pre>
-<pre><code>## [1] &quot;All samples:&quot; &quot;113&quot;         
+<pre><code>## [1] &quot;All samples:&quot; &quot;112&quot;         
 ## [1] &quot;Samples removed:&quot; &quot;1&quot;               
-## [1] &quot;Remaining samples:&quot; &quot;112&quot;               
+## [1] &quot;Remaining samples:&quot; &quot;111&quot;               
 ## [1] &quot;All features:&quot; &quot;12123&quot;        
 ## [1] &quot;Features removed:&quot; &quot;4797&quot;             
 ## [1] &quot;remaining features:&quot; &quot;7326&quot;</code></pre>

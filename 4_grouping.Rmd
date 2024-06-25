@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The Michabo Health Science workflow chemical grouping uses the control vs condition t-statistics as input. 
 
-```{r read_in_data}
+```{r read_in_data_grouping}
 tstats <- read.csv('data/combined_male_tstats.csv', row.names = 1)
 
 
@@ -33,7 +33,7 @@ tstats <- read.csv('data/combined_male_tstats.csv', row.names = 1)
 
 
 
-```{r read_in_data}
+```{r rscaling}
 tstats_scaled <- scale(tstats, center=FALSE, scale=TRUE)
 ```
 
@@ -41,7 +41,7 @@ tstats_scaled <- scale(tstats, center=FALSE, scale=TRUE)
 # t-stat - HCA
 ```{r HCA}
 library(pvclust)
-pvclust_res <- pvclust(tstats_scaled, method.hclust = "ward.D2", nboot=1000)
+pvclust_res <- pvclust(tstats_scaled, method.hclust = "ward.D2", nboot=100)
 
 
   

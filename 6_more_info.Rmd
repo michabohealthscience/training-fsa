@@ -36,58 +36,24 @@ Noting that for multivariate analysis the methodology would tyically undergo an 
 Plot with ggplot rather ggfortify
 
 ```{r hilic_pos_glog_pca}
-library(ggplot2)
-sample_metadata <- read.csv('data/m_HILIC_POS_sample_metadata_filtered.csv')
-glog <- read.csv('data/m_HILIC_POS_glog.csv')
-# Remove the first column which is just the id of the feature i.e. hilic_pos_glog[,-1]
-# Then transpose so that samples are rows and features are columns i.e. t(hilic_pos_glog[,-1)
-glog_t <- t(glog[,-1])
-
-pca <- prcomp(glog_t, center = TRUE, scale. = TRUE)
-pca_df <- cbind(pca$x[,1:2], sample_metadata)
-
-ggplot(pca_df, aes(PC1, PC2, color=test_substance)) + 
-  geom_point(aes(shape=dose_group, color=test_substance)) +
-  stat_ellipse(geom = "polygon", aes(fill = after_scale(alpha(colour, 0.3))))+
-  scale_colour_manual(values=c("khaki","black","blue", 'red', "grey",'orange', 'magenta', 'yellow', 'green', 'brown', 'purple'))+
-  scale_shape_manual(values=c(4,8,2,0))+
-  theme_bw()
-
-```
-
-
-
-```{r hilic_pos_glog_pca}
-    # c = 0
-    # for (test_sub in c(1,2,3,4,5,7,8,9)){
-    #   for (dose in c(1,2)){
-    #     
-    #     for (feature in sort(unique(pqn_long$variable))){
-    #       print(feature)
-    #       c = c + 1
-    #       
-    #       treated <- pqn_long[pqn_long$test_substance == test_sub &
-    #                     pqn_long$dose_group == dose &
-    #                     pqn_long$variable == feature,]
-    #         
-    #       control <- pqn_long[pqn_long$test_substance == 0 &
-    #                     pqn_long$dose_group == 0 &
-    #                     pqn_long$variable == feature,]
-    #       
-    #       # Specify that we need 3 or more samples in both the treated and control condition
-    #       if (sum(!is.na(treated$value)) > 3 && sum(!is.na(control$value)) > 3){
-    #           ttest_out <- t.test(treated$value, control$value)
-    #           
-    #           ttest_l[[c]] <- c(feature, test_sub, dose, ttest_out$p.value, ttest_out$statistic)
-    #       }else{
-    #         ttest_l[[c]] <- NA
-    #       }
-    #         
-    # 
-    #     }
-    #   }
-    #   
-    # }
+# library(ggplot2)
+# sample_metadata <- read.csv('data/m_HILIC_POS_sample_metadata_filtered.csv')
+# glog <- read.csv('data/m_HILIC_POS_glog.csv')
+# # Remove the first column which is just the id of the feature i.e. hilic_pos_glog[,-1]
+# # Then transpose so that samples are rows and features are columns i.e. t(hilic_pos_glog[,-1)
+# glog_t <- t(glog[,-1])
+# 
+# pca <- prcomp(glog_t, center = TRUE, scale. = TRUE)
+# pca_df <- cbind(pca$x[,1:2], sample_metadata)
+# 
+# ggplot(pca_df, aes(PC1, PC2, color=test_substance)) + 
+#   geom_point(aes(shape=dose_group, color=test_substance)) +
+#   stat_ellipse(geom = "polygon", aes(fill = after_scale(alpha(colour, 0.3))))+
+#   scale_colour_manual(values=c("khaki","black","blue", 'red', "grey",'orange', 'magenta', 'yellow', 'green', 'brown', 'purple'))+
+#   scale_shape_manual(values=c(4,8,2,0))+
+#   theme_bw()
 
 ```
+
+
 

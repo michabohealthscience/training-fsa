@@ -1,4 +1,4 @@
-Sample_name,Class,injection_order,PCB_ID,tube_barcode,animal_number,prep_batch,prep_order,test_substance,Sex,Sex_binary,dose_group,biol_rep
+sample_name,Class,injection_order,PCB_ID,tube_barcode,animal_number,prep_batch,prep_order,test_substance,Sex,Sex_binary,dose_group,biol_rep
 RP04_isQC44_pp,QC,123,RP04_isQC44_pp,QC,QC,QC,QC,QC,QC,QC,QC,QC
 RP04_isQC45_pp,QC,124,RP04_isQC45_pp,QC,QC,QC,QC,QC,QC,QC,QC,QC
 RP04_TS5_DG1_m_rep01_051_pp,Sample,125,X51,12391845,51,2,115,5,M,2,1,1

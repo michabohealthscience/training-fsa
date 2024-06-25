@@ -353,8 +353,8 @@ div.tocify {
 </div>
 
 
-<div id="compound-and-mode-of-action-details" class="section level2">
-<h2>Compound and mode of action details</h2>
+<div id="compound-and-mode-of-action-details" class="section level1">
+<h1>Compound and mode of action details</h1>
 <table>
 <caption>Table 5.1: Cefic MATCHING unblinded test substances</caption>
 <colgroup>
@@ -441,8 +441,22 @@ summary</div>
 </div>
 <p> </p>
 </div>
-<div id="chemical-grouping-using-structure-only" class="section level2">
-<h2>Chemical grouping using structure only</h2>
+<div id="t-stat---hca---unblinded" class="section level1">
+<h1>t-stat - HCA - unblinded</h1>
+<pre class="r"><code># tstats &lt;- read.csv(&#39;data/combined_male_tstats.csv&#39;, row.names = 1)
+# tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)
+# 
+# 
+# library(pvclust)
+# pvclust_res &lt;- pvclust(tstats_scaled, method.hclust = &quot;ward.D2&quot;, nboot=1000)
+# 
+# 
+#   
+# plot(pvclust_res, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)
+# pp = pvpick(pvclust_res, alpha=0.05, pv=&quot;si&quot;, type=&quot;geq&quot;, max.only=TRUE)</code></pre>
+</div>
+<div id="chemical-grouping-using-structure-only" class="section level1">
+<h1>Chemical grouping using structure only</h1>
 <!-- ![Fig 4.2. Cefic MATCHING compound PCA (MACCS fingerprints)](cefic_matching_compounds_pca_maccs.png){width=400px} -->
 <!-- &nbsp; -->
 <div class="float">

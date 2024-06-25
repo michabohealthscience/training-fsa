@@ -375,23 +375,22 @@ the intensity data for the analysis today.</p>
 <div id="principal-component-analysis" class="section level1">
 <h1>Principal component analysis</h1>
 <p>Plot with ggplot rather ggfortify</p>
-<pre class="r"><code>library(ggplot2)
-sample_metadata &lt;- read.csv(&#39;data/m_HILIC_POS_sample_metadata_filtered.csv&#39;)
-glog &lt;- read.csv(&#39;data/m_HILIC_POS_glog.csv&#39;)
-# Remove the first column which is just the id of the feature i.e. hilic_pos_glog[,-1]
-# Then transpose so that samples are rows and features are columns i.e. t(hilic_pos_glog[,-1)
-glog_t &lt;- t(glog[,-1])
-
-pca &lt;- prcomp(glog_t, center = TRUE, scale. = TRUE)
-pca_df &lt;- cbind(pca$x[,1:2], sample_metadata)
-
-ggplot(pca_df, aes(PC1, PC2, color=test_substance)) + 
-  geom_point(aes(shape=dose_group, color=test_substance)) +
-  stat_ellipse(geom = &quot;polygon&quot;, aes(fill = after_scale(alpha(colour, 0.3))))+
-  scale_colour_manual(values=c(&quot;khaki&quot;,&quot;black&quot;,&quot;blue&quot;, &#39;red&#39;, &quot;grey&quot;,&#39;orange&#39;, &#39;magenta&#39;, &#39;yellow&#39;, &#39;green&#39;, &#39;brown&#39;, &#39;purple&#39;))+
-  scale_shape_manual(values=c(4,8,2,0))+
-  theme_bw()</code></pre>
-<p><img src="6_more_info_files/figure-html/hilic_pos_glog_pca-1.png" width="672" /></p>
+<pre class="r"><code># library(ggplot2)
+# sample_metadata &lt;- read.csv(&#39;data/m_HILIC_POS_sample_metadata_filtered.csv&#39;)
+# glog &lt;- read.csv(&#39;data/m_HILIC_POS_glog.csv&#39;)
+# # Remove the first column which is just the id of the feature i.e. hilic_pos_glog[,-1]
+# # Then transpose so that samples are rows and features are columns i.e. t(hilic_pos_glog[,-1)
+# glog_t &lt;- t(glog[,-1])
+# 
+# pca &lt;- prcomp(glog_t, center = TRUE, scale. = TRUE)
+# pca_df &lt;- cbind(pca$x[,1:2], sample_metadata)
+# 
+# ggplot(pca_df, aes(PC1, PC2, color=test_substance)) + 
+#   geom_point(aes(shape=dose_group, color=test_substance)) +
+#   stat_ellipse(geom = &quot;polygon&quot;, aes(fill = after_scale(alpha(colour, 0.3))))+
+#   scale_colour_manual(values=c(&quot;khaki&quot;,&quot;black&quot;,&quot;blue&quot;, &#39;red&#39;, &quot;grey&quot;,&#39;orange&#39;, &#39;magenta&#39;, &#39;yellow&#39;, &#39;green&#39;, &#39;brown&#39;, &#39;purple&#39;))+
+#   scale_shape_manual(values=c(4,8,2,0))+
+#   theme_bw()</code></pre>
 </div>
 
 
