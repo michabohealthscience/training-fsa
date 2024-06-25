@@ -151,13 +151,14 @@ There are two values we will use later from the from the t-test
 * **p-value**
 
 
-We can use a a few `for loops` in a `function` to calculate this for all the conditions within the assay.
-Note there are multiple ways to acheive this, for loops are straightforward approach that do not require many additional packages however other functions and packages (like plyr and tidyr) can acheive the same outcome.
+We can use a a few `for loops` in a `function` to calculate this for all features for a specific test substance.
+
+Note there are multiple ways to acheive this, for loops are straightforward approach that do not require many additional packages however other functions and packages (like plyr and tidyr) can be used.
 
 ```{r t-test_data_one_assay}
 library(reshape2)
 
-ttest_per_test_substance <- function(pqn, sample_metadata, test_substance=1){
+ttest_per_test_substance <- function(pqn, sample_metadata, test_substance=2){
     pqn_t <- data.frame(t(pqn[,-1]))
     colnames(pqn_t) <- pqn$feature_name
     pqn_t$sample_name <- rownames(pqn_t)
@@ -197,29 +198,82 @@ ttest_per_test_substance <- function(pqn, sample_metadata, test_substance=1){
         if (sum(!is.na(treated$value)) > 2 && sum(!is.na(control$value)) > 2){
               ttest_out <- t.test(treated$value, control$value)
               
-              ttest_l[[n]] <- c(feature, dose, ttest_out$p.value, ttest_out$statistic)
+              if (mean(control$value, na.rm=T) > 0){
+                fc <- mean(treated$value, na.rm=T) / mean(control$value, na.rm=T)  
+              }else{
+                fc <- NA
+              }
+              
+              
+              ttest_l[[n]] <- c(feature, dose, ttest_out$p.value, ttest_out$statistic, fc)
         }else{
-          ttest_l[[n]] <- c(feature, dose, NA, NA)
+          ttest_l[[n]] <- c(feature, dose, NA, NA, NA)
         }
             
       }
     }
     ttest_df <- data.frame(Reduce(rbind, ttest_l))
-    colnames(ttest_df) <- c('feature_name', 'dose', 'pvalue', 'tstat')
+    colnames(ttest_df) <- c('feature_name', 'dose', 'pvalue', 'tstat', 'fc')
     
     ttest_df$pvalue <- as.numeric(ttest_df$pvalue)
     ttest_df$tstat <- as.numeric(ttest_df$tstat)
+    ttest_df$fc <- as.numeric(ttest_df$fc)
+    
+    
+    
+    
     
     ttest_df$pvalue
     return(ttest_df)
 }
 
 
+
+
+```
+
+
+So lets run the function to get all the p values and fold changes 
+```{r run_function}
+ttest_ts2 <- ttest_per_test_substance(pqn, sample_metadata, test_substance=2)
+
+
+```
+
+```{r volcano_plot}
+library(tidyr)
+ttest_ts2 <- ttest_ts2[!is.na(ttest_ts2$pvalue),]
+ttest_ts2$qvalue <- p.adjust(ttest_ts2$pvalue, method = 'fdr')
+
+ttest_ts2$diff <- 'NONE'
+ttest_ts2$diff[ttest_ts2$tstat<0 & ttest_ts2$qvalue<0.05] <- 'DOWN'
+ttest_ts2$diff[ttest_ts2$tstat>0 & ttest_ts2$qvalue<0.05] <- 'UP'
+
+
+ggplot(data=ttest_ts2, aes(x=log2(fc), y=-log10(qvalue), col=diff)) +
+        geom_point() + 
+        theme_minimal() +
+        scale_color_manual(values=c("blue", "black", "red")) +
+        geom_vline(xintercept=c(-0.6, 0.6), col="red") +
+        geom_hline(yintercept=-log10(0.05), col="red")
+
+
+
 ```
 
 
 # Summary of t-tests
-Rather than do this on all the test substances and all assays in this training we have a data file already created with the relevant t-stats that we can use for grouping
+Rather than do this on all the test substances and all assays in this training we have a data file already created with the relevant t-stats that we can use for grouping in the next section.
 
+Below though we show a summary of all the t-test analysis done across all assays and 
+
+We note here that **multiple testing correction** was performed on the p-values to generate q-values. 
+
+This was used as manual check to see if any of the test substance treatments were not exhibiting much bioactivity and a such should not be included in the grouping analysis.
+
+It was deemed that for the male data, there was enough bioactivity to proceed to grouping without removing any test substance treatments. For the the female data however, treatment groups were removed (TSx)
+
+
+![](ttest_summary.png)
 
 # References

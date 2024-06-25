@@ -55,10 +55,8 @@ tstats_scaled <- scale(tstats, center=FALSE, scale=TRUE)
 library(pvclust)
 pvclust_res <- pvclust(tstats_scaled, method.hclust = "ward.D2", nboot=100)
 
-
-  
 plot(pvclust_res, c("si", "au", "bp"), hang=-1)
-pp = pvpick(pvclust_res, alpha=0.05, pv="si", type="geq", max.only=TRUE)
+
 
 ```
 

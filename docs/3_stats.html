@@ -470,14 +470,14 @@ ttest_out</code></pre>
 <li><strong>p-value</strong></li>
 </ul>
 <p>We can use a a few <code>for loops</code> in a <code>function</code>
-to calculate this for all the conditions within the assay. Note there
-are multiple ways to acheive this, for loops are straightforward
-approach that do not require many additional packages however other
-functions and packages (like plyr and tidyr) can acheive the same
-outcome.</p>
+to calculate this for all features for a specific test substance.</p>
+<p>Note there are multiple ways to acheive this, for loops are
+straightforward approach that do not require many additional packages
+however other functions and packages (like plyr and tidyr) can be
+used.</p>
 <pre class="r"><code>library(reshape2)
 
-ttest_per_test_substance &lt;- function(pqn, sample_metadata, test_substance=1){
+ttest_per_test_substance &lt;- function(pqn, sample_metadata, test_substance=2){
     pqn_t &lt;- data.frame(t(pqn[,-1]))
     colnames(pqn_t) &lt;- pqn$feature_name
     pqn_t$sample_name &lt;- rownames(pqn_t)
@@ -517,28 +517,89 @@ ttest_per_test_substance &lt;- function(pqn, sample_metadata, test_substance=1){
         if (sum(!is.na(treated$value)) &gt; 2 &amp;&amp; sum(!is.na(control$value)) &gt; 2){
               ttest_out &lt;- t.test(treated$value, control$value)
               
-              ttest_l[[n]] &lt;- c(feature, dose, ttest_out$p.value, ttest_out$statistic)
+              if (mean(control$value, na.rm=T) &gt; 0){
+                fc &lt;- mean(treated$value, na.rm=T) / mean(control$value, na.rm=T)  
+              }else{
+                fc &lt;- NA
+              }
+              
+              
+              ttest_l[[n]] &lt;- c(feature, dose, ttest_out$p.value, ttest_out$statistic, fc)
         }else{
-          ttest_l[[n]] &lt;- c(feature, dose, NA, NA)
+          ttest_l[[n]] &lt;- c(feature, dose, NA, NA, NA)
         }
             
       }
     }
     ttest_df &lt;- data.frame(Reduce(rbind, ttest_l))
-    colnames(ttest_df) &lt;- c(&#39;feature_name&#39;, &#39;dose&#39;, &#39;pvalue&#39;, &#39;tstat&#39;)
+    colnames(ttest_df) &lt;- c(&#39;feature_name&#39;, &#39;dose&#39;, &#39;pvalue&#39;, &#39;tstat&#39;, &#39;fc&#39;)
     
     ttest_df$pvalue &lt;- as.numeric(ttest_df$pvalue)
     ttest_df$tstat &lt;- as.numeric(ttest_df$tstat)
+    ttest_df$fc &lt;- as.numeric(ttest_df$fc)
+    
+    
+    
+    
     
     ttest_df$pvalue
     return(ttest_df)
 }</code></pre>
+<p>So lets run the function to get all the p values and fold changes</p>
+<pre class="r"><code>ttest_ts2 &lt;- ttest_per_test_substance(pqn, sample_metadata, test_substance=2)</code></pre>
+<pre><code>## [1] &quot;1&quot;     &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;1000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;2000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;3000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;4000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;5000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;6000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;7000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;8000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;9000&quot;  &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;10000&quot; &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;11000&quot; &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;12000&quot; &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;13000&quot; &quot;of&quot;    &quot;14652&quot;
+## [1] &quot;14000&quot; &quot;of&quot;    &quot;14652&quot;</code></pre>
+<pre class="r"><code>library(tidyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:reshape2&#39;:
+## 
+##     smiths</code></pre>
+<pre class="r"><code>ttest_ts2 &lt;- ttest_ts2[!is.na(ttest_ts2$pvalue),]
+ttest_ts2$qvalue &lt;- p.adjust(ttest_ts2$pvalue, method = &#39;fdr&#39;)
+
+ttest_ts2$diff &lt;- &#39;NONE&#39;
+ttest_ts2$diff[ttest_ts2$tstat&lt;0 &amp; ttest_ts2$qvalue&lt;0.05] &lt;- &#39;DOWN&#39;
+ttest_ts2$diff[ttest_ts2$tstat&gt;0 &amp; ttest_ts2$qvalue&lt;0.05] &lt;- &#39;UP&#39;
+
+
+ggplot(data=ttest_ts2, aes(x=log2(fc), y=-log10(qvalue), col=diff)) +
+        geom_point() + 
+        theme_minimal() +
+        scale_color_manual(values=c(&quot;blue&quot;, &quot;black&quot;, &quot;red&quot;)) +
+        geom_vline(xintercept=c(-0.6, 0.6), col=&quot;red&quot;) +
+        geom_hline(yintercept=-log10(0.05), col=&quot;red&quot;)</code></pre>
+<p><img src="3_stats_files/figure-html/volcano_plot-1.png" width="672" /></p>
 </div>
 <div id="summary-of-t-tests" class="section level1">
 <h1>Summary of t-tests</h1>
 <p>Rather than do this on all the test substances and all assays in this
 training we have a data file already created with the relevant t-stats
-that we can use for grouping</p>
+that we can use for grouping in the next section.</p>
+<p>Below though we show a summary of all the t-test analysis done across
+all assays and</p>
+<p>We note here that <strong>multiple testing correction</strong> was
+performed on the p-values to generate q-values.</p>
+<p>This was used as manual check to see if any of the test substance
+treatments were not exhibiting much bioactivity and a such should not be
+included in the grouping analysis.</p>
+<p>It was deemed that for the male data, there was enough bioactivity to
+proceed to grouping without removing any test substance treatments. For
+the the female data however, treatment groups were removed (TSx)</p>
+<p><img src="ttest_summary.png" /></p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
