@@ -115,9 +115,12 @@ autoplot(pca_no_qcs, x=1, y=2, data=sample_metadata_no_qcs, colour="test_substan
 
 # Student t-test
 
-Here we will a very common univariate statistical test to use for assessing samples from a specific condition against a control.
+Here we will the common univariate statistical, a two tailed t-test, to compare the means intensity values of the control and treated groups
 
-Why t-test?
+
+![](t-test.png)
+
+&nbsp;
 
 
 We will be using the the PQN normalised intensity matrix for this analysis (so missing value imputation and glog has not bee applied to the matrix)

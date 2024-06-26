@@ -375,7 +375,16 @@ substance.</p>
 <div id="hierarchical-cluster-analysis-hca-on-t-statistics"
 class="section level1">
 <h1>Hierarchical Cluster Analysis (HCA) on t-statistics</h1>
-<p>….To add text from John</p>
+<p>The focus of our grouping will be using Hierarchical Cluster Analysis
+(HCA) on the t-statistics. See below for some general principals on
+HCA.</p>
+<p><img src="hca_explained.png" /></p>
+<p> </p>
+<p>We will be using a package called <code>pvclust</code> to perform the
+HCA which calculates some additional measures of confidences that we
+will explore later</p>
+<p>So let’s run the grouping with pvclust. Using Euclidean distance
+matrix and the ‘Ward.D2’ method of clustering</p>
 <pre class="r"><code>library(pvclust)
 pvclust_res &lt;- pvclust(tstats_scaled, method.dist=&quot;euclidean&quot;, method.hclust = &quot;ward.D2&quot;, nboot=100)</code></pre>
 <pre><code>## Bootstrap (r = 0.5)... Done.
@@ -484,9 +493,8 @@ class="section level1">
 <p> </p>
 <div class="float">
 <img src="cefic_matching_compounds.png"
-alt="Fig 5.1. Cefic MATCHING unblinded - summary" />
-<div class="figcaption">Fig 5.1. Cefic MATCHING unblinded -
-summary</div>
+alt="Cefic MATCHING unblinded - summary" />
+<div class="figcaption">Cefic MATCHING unblinded - summary</div>
 </div>
 <p> </p>
 </div>
@@ -512,6 +520,11 @@ pvclust_res &lt;- pvclust(tstats_scaled, method.dist=&quot;euclidean&quot;, meth
 ## Bootstrap (r = 1.4)... Done.</code></pre>
 <pre class="r"><code>plot(pvclust_res, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)</code></pre>
 <p><img src="5_grouping_files/figure-html/HCA_unblind-1.png" width="768" /></p>
+</div>
+<div id="assessing-confidence-in-the-grouping-hypothesis"
+class="section level1">
+<h1>Assessing confidence in the grouping hypothesis</h1>
+<p><img src="confidence_in_hca.png" />  </p>
 </div>
 <div id="t-stat---pca---unblinded" class="section level1">
 <h1>t-stat - PCA - unblinded</h1>
@@ -554,8 +567,8 @@ for the grouping we are using structural fingerprints of the test
 substance.</p>
 <div class="float">
 <img src="cefic_matching_compounds_hca_maccs.png"
-alt="Fig 5.2. Cefic MATCHING compound HCA (MACCS fingerprints)" />
-<div class="figcaption">Fig 5.2. Cefic MATCHING compound HCA (MACCS
+alt="Cefic MATCHING compound HCA (MACCS fingerprints)" />
+<div class="figcaption">Cefic MATCHING compound HCA (MACCS
 fingerprints)</div>
 </div>
 <p> </p>
