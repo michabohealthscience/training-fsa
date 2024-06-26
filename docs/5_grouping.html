@@ -358,18 +358,15 @@ div.tocify {
 <p>We have finally made it to the grouping!</p>
 <p>For the Michabo Health Science workflow grouping we use the
 t-statistic calculated from the previous sections.</p>
-<p>The benefit of using the t-statistic over other metrics (e.g. fold
-changes) is that variance is that the we are taking into consideration
-the variation between samples when comparing the means of the control
-and treated samples.</p>
-<p>First get root URL for data</p>
-<pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
-<p>Then read in the combined t-stats calculated for each assay, test
+<p>let’s read in the combined t-stats calculated for each assay, test
 substance and dose for male rodents.</p>
 <pre class="r"><code>tstats &lt;- read.csv(file.path(root, &#39;data/combined_male_tstats.csv&#39;), row.names = 1)</code></pre>
-<p>Now we vector normalise on each treatment condition. This is
-performed to minimise the impact of the potency of each test
-substance.</p>
+<p>Now we vector normalise on each treatment condition using the
+<code>scale</code> function which will divide each treated condition by
+the square root of the sum of the squared t-statistics for all features
+of that condition.</p>
+<p>This is performed to attempt to minimise the impact of the “potency”
+of each test substance.</p>
 <pre class="r"><code>tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)</code></pre>
 </div>
 <div id="hierarchical-cluster-analysis-hca-on-t-statistics"
@@ -379,12 +376,16 @@ class="section level1">
 (HCA) on the t-statistics. See below for some general principals on
 HCA.</p>
 <p><img src="hca_explained.png" /></p>
-<p> </p>
+<p>   </p>
 <p>We will be using a package called <code>pvclust</code> to perform the
-HCA which calculates some additional measures of confidences that we
-will explore later</p>
+HCA which calculates some additional measures of confidence that we will
+explore later</p>
 <p>So let’s run the grouping with pvclust. Using Euclidean distance
-matrix and the ‘Ward.D2’ method of clustering</p>
+matrix and the ‘Ward.D2’ method for clustering (i.e. linkage
+method).</p>
+<p>See the following link for <a
+href="https://i2.wp.com/dataaspirant.com/wp-content/uploads/2020/12/15-Hierarchical-Clustering-Linkages.png?resize=609%2C659&amp;ssl=1">further
+details on linkage methods</a>).</p>
 <pre class="r"><code>library(pvclust)
 pvclust_res &lt;- pvclust(tstats_scaled, method.dist=&quot;euclidean&quot;, method.hclust = &quot;ward.D2&quot;, nboot=100)</code></pre>
 <pre><code>## Bootstrap (r = 0.5)... Done.
@@ -526,8 +527,8 @@ class="section level1">
 <h1>Assessing confidence in the grouping hypothesis</h1>
 <p><img src="confidence_in_hca.png" />  </p>
 </div>
-<div id="t-stat---pca---unblinded" class="section level1">
-<h1>t-stat - PCA - unblinded</h1>
+<div id="t-stat---pca" class="section level1">
+<h1>t-stat - PCA</h1>
 <p>We can also represent the data using PCA</p>
 <pre class="r"><code>library(ggplot2)
 # transpose as features should be columns

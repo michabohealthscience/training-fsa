@@ -447,8 +447,8 @@ suppression)</li>
 </div>
 <div id="sample-metadata" class="section level1">
 <h1>Sample metadata</h1>
-<p>So… lets finally start using R and RStudio. Let’s begin with looking
-at the metadata for the samples to better understand the dataset.</p>
+<p>Let’s begin with looking at the metadata for the samples to better
+understand the dataset.</p>
 <p>All files for this practical will be downloaded directly downloaded
 from the Github repository. See the following root URL below.</p>
 <pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
@@ -483,15 +483,17 @@ a <code>dataframe</code> R object.</p>
 ## 4          2          2        1
 ## 5          2          1        1
 ## 6          2          1        1</code></pre>
-<p>We can use <code>View(sample_metadata)</code> in a more user friendly
-manner within RStudio where you can filter the columns</p>
-<p><img src="RStudio_sample_metadata_view.png" /></p>
+<p>   </p>
+<p>We can use <code>View(sample_metadata_all)</code> in a more user
+friendly manner within RStudio where you can filter the columns</p>
+<p><img src="RStudio_sample_metadata_view.png" />    </p>
 <p>The following information regarding independent variables for each
 sample was available prior to unblinding:</p>
 <ul>
-<li>Test substances: TS1, TS2, TS3, TS4, TS5, TS7, TS8, TS9</li>
-<li>Doses: Low (1), High (2)</li>
-<li>Sex: Male</li>
+<li><strong>Test substances</strong>: TS1, TS2, TS3, TS4, TS5, TS7, TS8,
+TS9</li>
+<li><strong>Doses</strong>: Low (1), High (2)</li>
+<li><strong>Sex</strong>: Male</li>
 </ul>
 <p>(TS6 was excluded prior to exposures).</p>
 <p>Important to note here is that there are QC samples throughout the
@@ -503,34 +505,15 @@ replicates (i.e. 5 samples) for this dataset there is 1 technical
 replicate for each sample.</p>
 <p>The ‘prep order’ refers to the preparation of the samples
 (i.e. metabolite extraction), like the run order, the preparation order
-should be randomized across the samples to help counteract any bias
-effect this might have on the metabolite profiles.</p>
+was randomized across the samples to help counteract any bias effect
+this might have on the experiment.</p>
 </div>
-<div id="feature-metadata" class="section level1">
-<h1>Feature metadata</h1>
-<p>For each assay there will also be metadata for each feature (this
-might also include the metabolite annotated to that feature). Due to the
-complexity of the data and metabolite annotation there can often be alot
-of metadata associated with each feature</p>
-<p>Lets just check quickly have a look at the <em>m/z</em> and RT values
-for HILIC POS.</p>
-<pre class="r"><code>feature_meta &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/0_feature_metadata.csv&#39;))
-
-# only select a few columns
-feature_meta_reduced &lt;- feature_meta[,c(1, 3, 6)]
-
-head(feature_meta_reduced)</code></pre>
-<pre><code>##   feature_name          mz         rt
-## 1      M70T578 70.01248058 578.444712
-## 2      M70T460 70.02878878 460.364628
-## 3      M70T301 70.05927549 300.717252
-## 4      M70T519 70.06515683 519.282969
-## 5      M70T367 70.07326748 367.057464
-## 6      M70T336  70.2508749 336.279876</code></pre>
-<p>So for this assay alone we have
-<code>nrow(feature_meta_reduced)</code> metabolite features. However if
-we combine all the assays (HILIC_POS, HILIC_NEG, LIPIDS_POS, LIPID_NEG)
-for the male component of the data there are 28,664 features.</p>
+<div id="how-much-data-are-we-using" class="section level1">
+<h1>How much data are we using?</h1>
+<p>When we combine all the assays (HILIC_POS, HILIC_NEG, LIPIDS_POS,
+LIPID_NEG) for the male component of the data, the focus of the
+practical, we are are looking at 28,664 metabolite features across 90
+samples so….. 28,664 x 90 = 2,579,760 data points!</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>

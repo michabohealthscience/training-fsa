@@ -32,7 +32,7 @@ Quality assessments was performed on all 6 of the participating ring trial labs.
 One of the key metrics involved in this assessment is to evaluate intrastudy quality control-samples which are a pooled sample derived from all other samples. The intrastudy QC samples were assessed using Principal Component Analysis (PCA) and assessing the medium relative standard deviation across all features. Following this evaulation the data from RP8 was deemed not be sufficient high quality and so was removed from further analysis.
 
 
-
+[@viant2024demonstrating]
 
 ```{r table, tidy=FALSE, echo=FALSE}
 library(formattable)

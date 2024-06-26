@@ -19,13 +19,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Statistical analysis in metabolomics
 
-For the majority of metabolomics studies one or more of the following approaches will be used:
+For most metabolomics studies one or more of the following approaches will be used:
 
 * Univariate statistics - where each feature is assessed separately (e.g. t-test)
 * Multivariate (unsupervised) - where features are assessed together and without the use of training data (e.g. PCA)
 * Multivariate (supervised) - where features are assessed together and with the use of labelled training data (e.g. PLS-DA)
 
-In this training we will first use unsupverised multivariate analysis (principal component analysis - "PCA") to assess intensity data and then using univariate analysis (t-tests) to assess the differential abundant molecules compared to the control for each condition.
+In this training we will first use unsupervised multivariate analysis (principal component analysis - "PCA") to assess intensity data and then using univariate analysis (t-tests) to assess the differential abundant molecules compared to the control for each condition.
 
 
 # PCA of intensity
@@ -36,8 +36,7 @@ PCA has multiple applications (e.g. to check the quality of the data (i.e. previ
 
 Here we will be looking at data that already been checked for data quality (including QC samples, outlier samples) and we are now assessing what we believe is valid bioactivity.
 
-First get root URL for data
-```{r root_dir_url}
+```{r root_dir_url, echo=FALSE}
 root <- 'https://raw.githubusercontent.com/michabohealthscience/training-fsa/main'
 ```
 
@@ -51,19 +50,11 @@ root <- '.'
 ```{r hilic_pos_glog}
 # Read in the sample metadata and processed data matrix
 sample_metadata <- read.csv(file.path(root, 'data/HILIC_POS_male/0_sample_metadata_filtered.csv'))
-glog <- read.csv(file.path(root, 'data/HILIC_POS_male/5_glog.csv'))
+glog <- read.csv(file.path(root, 'data/HILIC_POS_male/5_glog.csv'), row.names = 1)
+
 
 ```
 
-
-
-First we need to remove the first column of the matrix which was used to record the feature names
-and is not required for this tutorial
-```{r hilic_pos_glog_rm}
-# Remove the feature names (not required for this analysis)
-glog <- glog[,-1]
-
-```
 
 The PCA function within R `prcomp` needs to have the samples as rows and the features
 as columns. So next we need transpose the data. 
@@ -117,6 +108,10 @@ autoplot(pca_no_qcs, x=1, y=2, data=sample_metadata_no_qcs, colour="test_substan
 
 Here we will the common univariate statistical, a two tailed t-test, to compare the means intensity values of the control and treated groups
 
+There are two key metrics we will be using
+
+* **t-statistic (or t-value)**
+* **p-value**
 
 ![](t-test.png)
 
@@ -142,22 +137,34 @@ ts1_dose_2_samples <- sample_metadata[,1][sample_metadata$dose_group==2 & sample
 # Select the 2000th feature as an example
 f2000 <- pqn[2000,]
 
+
+controldf <- data.frame(intensity = unlist(f2000[,control_samples]), control_treated = 'control')
+
+treateddf <- data.frame(intensity = unlist(f2000[,ts1_dose_2_samples]), control_treated = 'treated')
+
 # Perform a t-test for this feature subset based on the chosen samples
-ttest_out <- t.test(f2000[,control_samples], f2000[,ts1_dose_2_samples])
+ttest_out <- t.test(treateddf$intensity, controldf$intensity)
 
 ttest_out
+
 ```
 
-There two key metrics we use are the
-
-* **t-statistic (or t-value)**
-* **p-value**
+So we can see that the means for are signficantly different to one another for this feature. And this difference is obvious if we visualise the data as well
 
 
-We can use a a few `for loops` in a `function` to calculate this for all features for a specific test substance. In addition we can calculate
-the fold change of the mean of treated samples Vs the mean of the control samples.
+```{r boxplot_data_one_feature}
 
-> **For those new to R and/or programming** - please don't worry about the inner workings of this function!! All it is doing is running multiple t-tests for each feature and condition. 
+ctdf <- rbind(controldf, treateddf)
+
+boxplot(intensity ~ control_treated, data = ctdf, frame = FALSE,  main=f2000['feature_name'])
+
+```
+
+
+We can use a few `for loops` in a `function` to calculate the t-test for all features for a specific test substance. Whilst we are here, we can also calculate the fold change difference between the control and treated means.
+
+> **For those new to R and/or programming** - please don't worry about the inner workings of this function!! All it is doing is running multiple t-tests and fold changes for each feature and treatment condition.
+
 
 ```{r t-test_data_one_assay}
 library(reshape2)
@@ -225,9 +232,9 @@ ttest_per_test_substance <- function(pqn, sample_metadata, test_substance=2){
     
     
     ttest_df <- ttest_df[!is.na(ttest_df$pvalue),]
+    rownames(ttest_df) <- NULL
     
     
-    ttest_df$pvalue
     return(ttest_df)
 }
 
@@ -248,11 +255,12 @@ Let's have a quick check of this dataframe.
 ```{r check_result_p}
 sum(ttest_ts2$pvalue<0.05)
 ```
-At the moment we are using p-values. However in many cases 
+
+So a substantial number of what seems siginficant changes. However we are deriving this from p-values. However in many cases 
 using multiple testing correction is recommended to avoid false positive results. 
 
 Lets use the the `p.adjust` function to calculate adjusted p-values (i.e. q-values) with the 
-`fdr` method i.e. the Benjamini & Hochberg (1995) approach. 
+`fdr` method i.e. the Benjamini & Hochberg approach. 
 
 
 ```{r check_result_q}
@@ -260,7 +268,7 @@ ttest_ts2$qvalue <- p.adjust(ttest_ts2$pvalue, method = 'fdr')
 sum(ttest_ts2$qvalue<0.05)
 ```
 
-So for this test substance we know we have a large number of metabolite features changing signficantly.
+So for this test substance we know we have a large number of metabolite features changing significantly.
 
 Let's do a visualisation of this with a volcano plot to give a better idea of what is either moving "up" or "down".
 
@@ -296,4 +304,4 @@ Following a review of the data. It was deemed that for the male component, there
 
 ![](ttest_summary.png)
 
-# References
+

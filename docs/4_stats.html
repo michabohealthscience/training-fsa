@@ -356,8 +356,8 @@ statistical analysis</h1>
 
 <div id="statistical-analysis-in-metabolomics" class="section level1">
 <h1>Statistical analysis in metabolomics</h1>
-<p>For the majority of metabolomics studies one or more of the following
-approaches will be used:</p>
+<p>For most metabolomics studies one or more of the following approaches
+will be used:</p>
 <ul>
 <li>Univariate statistics - where each feature is assessed separately
 (e.g. t-test)</li>
@@ -366,7 +366,7 @@ and without the use of training data (e.g. PCA)</li>
 <li>Multivariate (supervised) - where features are assessed together and
 with the use of labelled training data (e.g. PLS-DA)</li>
 </ul>
-<p>In this training we will first use unsupverised multivariate analysis
+<p>In this training we will first use unsupervised multivariate analysis
 (principal component analysis - “PCA”) to assess intensity data and then
 using univariate analysis (t-tests) to assess the differential abundant
 molecules compared to the control for each condition.</p>
@@ -388,15 +388,9 @@ biological activity).</p>
 <p>Here we will be looking at data that already been checked for data
 quality (including QC samples, outlier samples) and we are now assessing
 what we believe is valid bioactivity.</p>
-<p>First get root URL for data</p>
-<pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
 <pre class="r"><code># Read in the sample metadata and processed data matrix
 sample_metadata &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/0_sample_metadata_filtered.csv&#39;))
-glog &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/5_glog.csv&#39;))</code></pre>
-<p>First we need to remove the first column of the matrix which was used
-to record the feature names and is not required for this tutorial</p>
-<pre class="r"><code># Remove the feature names (not required for this analysis)
-glog &lt;- glog[,-1]</code></pre>
+glog &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/5_glog.csv&#39;), row.names = 1)</code></pre>
 <p>The PCA function within R <code>prcomp</code> needs to have the
 samples as rows and the features as columns. So next we need transpose
 the data.</p>
@@ -433,6 +427,11 @@ compared to the control. So let’s look at that in more detail</p>
 <p>Here we will the common univariate statistical, a two tailed t-test,
 to compare the means intensity values of the control and treated
 groups</p>
+<p>There are two key metrics we will be using</p>
+<ul>
+<li><strong>t-statistic (or t-value)</strong></li>
+<li><strong>p-value</strong></li>
+</ul>
 <p><img src="t-test.png" /></p>
 <p> </p>
 <p>We will be using the the PQN normalised intensity matrix for this
@@ -450,34 +449,42 @@ ts1_dose_2_samples &lt;- sample_metadata[,1][sample_metadata$dose_group==2 &amp;
 # Select the 2000th feature as an example
 f2000 &lt;- pqn[2000,]
 
+
+controldf &lt;- data.frame(intensity = unlist(f2000[,control_samples]), control_treated = &#39;control&#39;)
+
+treateddf &lt;- data.frame(intensity = unlist(f2000[,ts1_dose_2_samples]), control_treated = &#39;treated&#39;)
+
 # Perform a t-test for this feature subset based on the chosen samples
-ttest_out &lt;- t.test(f2000[,control_samples], f2000[,ts1_dose_2_samples])
+ttest_out &lt;- t.test(treateddf$intensity, controldf$intensity)
 
 ttest_out</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
 ## 
-## data:  f2000[, control_samples] and f2000[, ts1_dose_2_samples]
-## t = -5.0365, df = 5.033, p-value = 0.003906
+## data:  treateddf$intensity and controldf$intensity
+## t = 5.0365, df = 5.033, p-value = 0.003906
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -14670437  -4768483
+##   4768483 14670437
 ## sample estimates:
 ## mean of x mean of y 
-##   5568546  15288006</code></pre>
-<p>There two key metrics we use are the</p>
-<ul>
-<li><strong>t-statistic (or t-value)</strong></li>
-<li><strong>p-value</strong></li>
-</ul>
-<p>We can use a a few <code>for loops</code> in a <code>function</code>
-to calculate this for all features for a specific test substance. In
-addition we can calculate the fold change of the mean of treated samples
-Vs the mean of the control samples.</p>
+##  15288006   5568546</code></pre>
+<p>So we can see that the means for are signficantly different to one
+another for this feature. And this difference is obvious if we visualise
+the data as well</p>
+<pre class="r"><code>ctdf &lt;- rbind(controldf, treateddf)
+
+boxplot(intensity ~ control_treated, data = ctdf, frame = FALSE,  main=f2000[&#39;feature_name&#39;])</code></pre>
+<p><img src="4_stats_files/figure-html/boxplot_data_one_feature-1.png" width="672" /></p>
+<p>We can use a few <code>for loops</code> in a <code>function</code> to
+calculate the t-test for all features for a specific test substance.
+Whilst we are here, we can also calculate the fold change difference
+between the control and treated means.</p>
 <blockquote>
 <p><strong>For those new to R and/or programming</strong> - please don’t
 worry about the inner workings of this function!! All it is doing is
-running multiple t-tests for each feature and condition.</p>
+running multiple t-tests and fold changes for each feature and treatment
+condition.</p>
 </blockquote>
 <pre class="r"><code>library(reshape2)
 
@@ -544,9 +551,9 @@ ttest_per_test_substance &lt;- function(pqn, sample_metadata, test_substance=2){
     
     
     ttest_df &lt;- ttest_df[!is.na(ttest_df$pvalue),]
+    rownames(ttest_df) &lt;- NULL
     
     
-    ttest_df$pvalue
     return(ttest_df)
 }</code></pre>
 <p>So lets run the function to get all the the p-values and fold changes
@@ -570,17 +577,17 @@ for test substance 2</p>
 <p>Let’s have a quick check of this dataframe.</p>
 <pre class="r"><code>sum(ttest_ts2$pvalue&lt;0.05)</code></pre>
 <pre><code>## [1] 2903</code></pre>
-<p>At the moment we are using p-values. However in many cases using
-multiple testing correction is recommended to avoid false positive
-results.</p>
+<p>So a substantial number of what seems siginficant changes. However we
+are deriving this from p-values. However in many cases using multiple
+testing correction is recommended to avoid false positive results.</p>
 <p>Lets use the the <code>p.adjust</code> function to calculate adjusted
 p-values (i.e. q-values) with the <code>fdr</code> method i.e. the
-Benjamini &amp; Hochberg (1995) approach.</p>
+Benjamini &amp; Hochberg approach.</p>
 <pre class="r"><code>ttest_ts2$qvalue &lt;- p.adjust(ttest_ts2$pvalue, method = &#39;fdr&#39;)
 sum(ttest_ts2$qvalue&lt;0.05)</code></pre>
 <pre><code>## [1] 678</code></pre>
 <p>So for this test substance we know we have a large number of
-metabolite features changing signficantly.</p>
+metabolite features changing significantly.</p>
 <p>Let’s do a visualisation of this with a volcano plot to give a better
 idea of what is either moving “up” or “down”.</p>
 <pre class="r"><code>library(tidyr)</code></pre>
@@ -617,9 +624,6 @@ component, there was sufficient bioactivity to proceed to grouping
 without removing any test substance treatments. For the the female data
 however, treatment groups were removed.</p>
 <p><img src="ttest_summary.png" /></p>
-</div>
-<div id="references" class="section level1">
-<h1>References</h1>
 </div>
 
 

@@ -14,9 +14,7 @@ bibliography: references.bib
 
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 
 # Metabolomics data matrices
@@ -35,18 +33,15 @@ of this tutorial. Instead we will work with a few key data matrices that have un
 
 Let's start with the pre-filtering and pre-normalisation dataset and show what a typical metabolomics data matrix looks like.
 
-```{r root_dir_url, echo=FALSE}
-root <- 'https://raw.githubusercontent.com/michabohealthscience/training-fsa/main'
-```
 
 
-```{r root_dir, echo=FALSE}
-root <- '.'
-```
+
+
 
 And let's read in the our first intensity matrix
 
-```{r hilic_pos_intensity_unfiltered}
+
+``` r
 hilic_pos_all <- read.csv(file.path(root, 'data/HILIC_POS_male/1_unfiltered.csv'))
 ```
 
@@ -56,7 +51,8 @@ The first column is a reference to the *m/z* and retention time of a feature and
 
 Lets check how many samples and features we have for this data matrix. 
 
-```{r hilic_pos_intensity_cols_rows, results = "hold"}
+
+``` r
 # feature count
 feature_c_all = nrow(hilic_pos_all)
 # sample count
@@ -64,19 +60,24 @@ samp_c_all = ncol(hilic_pos_all)-1
 
 feature_c_all
 samp_c_all
+```
 
+```
+## [1] 12123
+## [1] 112
 ```
 
 We can compare this the the filtered data matrix to see how many features have been removed due to the standard processing steps
-```{r hilic_pos_intensity_filtered, results = "hold"}
+
+``` r
 hilic_pos_f <- read.csv(file.path(root, 'data/HILIC_POS_male/2_filtered.csv'))
 ```
 
 For this dataset we should see that only 1 sample will be removed (the blank sample - as it is no longer required for furher analysis) and substantial number of the metabolite features will have been removed that were deemed not suitable for further analysis.
 
 
-```{r hilic_pos_intensity_filtered_cols_rows, results = "hold"}
 
+``` r
 # feature count
 feature_c_f = nrow(hilic_pos_f)
 # sample count
@@ -90,6 +91,15 @@ c('Remaining samples:', samp_c_f)
 c('All features:', feature_c_all)
 c('Features removed:', feature_c_all-feature_c_f)
 c('remaining features:', feature_c_f)
+```
+
+```
+## [1] "All samples:" "112"         
+## [1] "Samples removed:" "1"               
+## [1] "Remaining samples:" "111"               
+## [1] "All features:" "12123"        
+## [1] "Features removed:" "4797"             
+## [1] "remaining features:" "7326"
 ```
 
 Now that we have a better understanding of metabolomics data matrices we can briefly explain the quality assessments before getting started on the statistical analysis.

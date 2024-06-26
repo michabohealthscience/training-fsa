@@ -58,7 +58,7 @@ The raw data collected from these LC-MS assays can generally can be thought of w
 &nbsp;
 
 # Sample metadata
-So... lets finally start using R and RStudio. Let's begin with looking at the metadata for the samples to better understand the dataset.
+Let's begin with looking at the metadata for the samples to better understand the dataset.
 
 All files for this practical will be downloaded directly downloaded from the Github repository. See the following root URL below.
 
@@ -81,17 +81,21 @@ sample_metadata_all <- read.csv(file.path(root, 'data/HILIC_POS_male/0_sample_me
 
 ```
 
-
 Lets have a quick look at the sample metadata. We can use the `head` function to just see the first few rows
 
 ```{r sample_metadata_view}
 head(sample_metadata_all)
 
 ```
+&nbsp;
+&nbsp;
 
-We can use `View(sample_metadata)` in a more user friendly manner within RStudio where you can filter the columns
+
+We can use `View(sample_metadata_all)` in a more user friendly manner within RStudio where you can filter the columns
 
 ![](RStudio_sample_metadata_view.png)
+&nbsp;
+&nbsp;
 
 
 The following information regarding independent variables for each sample was available prior to unblinding:
@@ -109,23 +113,9 @@ For each test_substance and dose there should be 5 biological replicates (i.e. 5
 
 The 'prep order' refers to the preparation of the samples (i.e. metabolite extraction), like the run order, the preparation order was randomized across the samples to help counteract any bias effect this might have on the experiment.
 
-# Feature metadata
+# How much data are we using?
 
-For each LC-MS assay,  there will also be metadata for each feature (this might also include the metabolite annotated to that feature). Due to the complexity of the data and metabolite annotation there can often be alot of metadata associated with each feature 
-
-Lets just check quickly have a look at the *m/z* and RT values for HILIC POS.
-
-
-```{r hilic_pos_feature_metadata}
-feature_meta <- read.csv(file.path(root, 'data/HILIC_POS_male/0_feature_metadata.csv'))
-
-# only select a few columns
-feature_meta_reduced <- feature_meta[,c(1, 3, 6)]
-
-head(feature_meta_reduced)
-```
-
-So for this assay alone we have `nrow(feature_meta_reduced)` metabolite features. However if we combine all the assays (HILIC_POS, HILIC_NEG, LIPIDS_POS, LIPID_NEG) for the male component of the data there are 28,664 features. 
+When we combine all the assays (HILIC_POS, HILIC_NEG, LIPIDS_POS, LIPID_NEG) for the male component of the data, the focus of the practical, we are are looking at 28,664 metabolite features across 90 samples so..... 28,664 x 90 = 2,579,760 data points!
 
 
 # References {-}

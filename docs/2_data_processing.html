@@ -370,15 +370,12 @@ href="6_more_info.html">More info</a> for the details of how the data
 has been processed.</p>
 <div id="intensity-data-matrix" class="section level2">
 <h2>Intensity data matrix</h2>
-<p>Let’s start with the pre-filtered and pre-normalisation dataset to
+<p>Let’s start with the pre-filtering and pre-normalisation dataset and
 show what a typical metabolomics data matrix looks like.</p>
-<p>First setup the root URL or path if not already done so.</p>
-<pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
 <p>And let’s read in the our first intensity matrix</p>
 <pre class="r"><code>hilic_pos_all &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/1_unfiltered.csv&#39;))</code></pre>
-<p>Again, <code>head(hilic_pos_all)</code> can be used for a quick check
-and <code>View(hilic_pos_all)</code> can be used to view in more
-detail.</p>
+<p>Again, <code>head</code> can be used for a quick check and
+<code>View</code> can be used to view in more detail.</p>
 <p>The first column is a reference to the <em>m/z</em> and retention
 time of a feature and the columns are the samples.</p>
 <p>Lets check how many samples and features we have for this data

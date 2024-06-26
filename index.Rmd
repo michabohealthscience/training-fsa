@@ -60,29 +60,5 @@ See below for a reminder of the different panels will be using in R Studio today
 
 &nbsp;
 
-## RStudio setup for training
-
-We recommend that everyone creates a new R Script - where they are copying and pasting the relevant R code throughout the tutorial.
-
-So please follow these steps before we being
-
-* Create a new R script
-* Save with an appropiate name (e.g. omics_grouping_training.R)
-* Copy and paste the code snippet below
-* Run the command
-
-Example code snippet
-
-```{r code_snippet}
-# Copy and paste commands from the practical into your script
-# and run either by clicking on the "run" button or 
-# typing Ctrl+Enter on the keyboard. 
-
-print("hellow world!")
-
-```
-
-![](rstudio_training_setup.gif)
-
 
 ## References
