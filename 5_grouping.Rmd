@@ -171,4 +171,3 @@ the grouping we are using structural fingerprints of the test substance.
 
 
 
-# References

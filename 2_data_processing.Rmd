@@ -27,7 +27,35 @@ Metabolomics data is typically analysed as a matrix of **intensities** where one
 &nbsp;
 
 The full data processing from raw mass spectrometry data to usable omics data matrix for grouping is beyond the scope 
-of this tutorial. Instead we will work with a few key data matrices that have undergone standard metabolomics data processing, see [More info](6_more_info.html) for the details of how the data has been processed.
+of this tutorial. Instead we will work with a few key data matrices that have undergone standard metabolomics data processing.
+
+In brief the following steps were performed:
+
+1. **Data reduction** - Full scan (MS1) "peak picking", grouping and any retention time correction performed by XCMS software.
+2. **QC assessment** - and removal of poor quality QCs.
+3. **Xenobiotic metabolite filter** - remove metabolites that are either the test substance or biotransformation products of the test substance.
+3. **Identification and removal of features** - blank filter and missing value filter by QC (≥ 30% missing values in the QC samples are removed).
+4. **Signal-drift and batch-effect correction** - to account for any signal drift or batch effects.
+5. **Further identification and removal of features** - further filtering of features based on threshold of missing values and relative standard deviation of the features.
+6. **Probabilistic Quotient Normalisation (PQN)** - accounts for dilution of complex biological mixtures.
+7. **Missing value imputation** - using k nearest neighbour approach (for multivariate analysis only).
+8. **Generalised logarithm transform (glog)** - variance-stabilising transformation that also reduces the weighting of very intense features in multivariate analysis so that they do not over-power less intense features that might still be significant (for multivariate analysis only)
+
+
+
+The full details of the data processing methods are found in the [supplemental of Cefic MATCHING publication](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10944399/bin/204_2024_3680_MOESM1_ESM.pdf) [@viant2024demonstrating].
+
+The HILIC_POS assay for male rodents was used as an example for this practical with the following relevant data files for the training available on 
+the github site:
+
+
+* **HILIC_POS_male/1_unfiltered.csv** - unfiltered intensity matrix
+* **HILIC_POS_male/2_filtered.csv** - filtered (both samples and features) intensity matrix
+* **HILIC_POS_male/3_pqn.csv** - PQN normalised intensity matrix
+* **HILIC_POS_male/4_mv_imputed.csv** - missing value imputed intensity matrix
+* **HILIC_POS_male/5_glog.csv** - glog intensity matrix
+
+
 
 
 ## Intensity data matrix
@@ -94,4 +122,5 @@ c('remaining features:', feature_c_f)
 
 Now that we have a better understanding of metabolomics data matrices we can briefly explain the quality assessments before getting started on the statistical analysis.
 
+# References
 

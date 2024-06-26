@@ -163,92 +163,15 @@ boxplot(intensity ~ control_treated, data = ctdf, frame = FALSE,  main=f2000['fe
 
 We can use a few `for loops` in a `function` to calculate the t-test for all features for a specific test substance. Whilst we are here, we can also calculate the fold change difference between the control and treated means.
 
-> **For those new to R and/or programming** - please don't worry about the inner workings of this function!! All it is doing is running multiple t-tests and fold changes for each feature and treatment condition.
+
+> **NOTE** - a function to do this is provided at the [**More info**](6_more_info.html) tab. If you already have some experience with R, feel free to run yourself otherwise just load in the output below. 
 
 
-```{r t-test_data_one_assay}
-library(reshape2)
-
-ttest_per_test_substance <- function(pqn, sample_metadata, test_substance=2){
-    pqn_t <- data.frame(t(pqn[,-1]))
-    colnames(pqn_t) <- pqn$feature_name
-    pqn_t$sample_name <- rownames(pqn_t)
-  
-    pqn_long <- melt(pqn_t, id.vars=c('sample_name'))
-    pqn_long <- merge(pqn_long, sample_metadata[,c('sample_name', 'test_substance', 'dose_group')], on='sample_name')
-    
-    pqn_long <- pqn_long[pqn_long$test_substance != "QC",]
-    pqn_long$test_substance <- as.numeric(pqn_long$test_substance)
-    pqn_long$dose <- as.numeric(pqn_long$dose)
-    pqn_long$value <- as.numeric(pqn_long$value)
-    
-    # Just check test substance 1
-    pqn_long <- pqn_long[pqn_long$test_substance == test_substance | pqn_long$dose_group == 0, ]
-    ttest_l = list()
-    feature_names <- pqn$feature_name
-    doses <- c(1,2)
-    
-    n = 0
-    for (dose in doses){
-      
-      for (feature in feature_names){
-        
-        n = n + 1
-        
-        if (n %% 1000 == 0 || n == 1){
-          print(c(n, 'of', length(feature_names)*length(doses)))
-        }
-        
-        treated <- pqn_long[pqn_long$dose_group == dose &
-                            pqn_long$variable == feature,]
-            
-        control <- pqn_long[pqn_long$dose_group == 0 &
-                            pqn_long$variable == feature,]
-          
-        # Specify that we need 3 or more samples in both the treated and control condition
-        if (sum(!is.na(treated$value)) > 2 && sum(!is.na(control$value)) > 2){
-              ttest_out <- t.test(treated$value, control$value)
-              
-              if (mean(control$value, na.rm=T) > 0){
-                fc <- mean(treated$value, na.rm=T) / mean(control$value, na.rm=T)  
-              }else{
-                fc <- NA
-              }
-              
-              
-              ttest_l[[n]] <- c(feature, dose, ttest_out$p.value, ttest_out$statistic, fc)
-        }else{
-          ttest_l[[n]] <- c(feature, dose, NA, NA, NA)
-        }
-            
-      }
-    }
-    ttest_df <- data.frame(Reduce(rbind, ttest_l))
-    colnames(ttest_df) <- c('feature_name', 'dose', 'pvalue', 'tstat', 'fc')
-    
-    ttest_df$pvalue <- as.numeric(ttest_df$pvalue)
-    ttest_df$tstat <- as.numeric(ttest_df$tstat)
-    ttest_df$fc <- as.numeric(ttest_df$fc)
-    
-    
-    ttest_df <- ttest_df[!is.na(ttest_df$pvalue),]
-    rownames(ttest_df) <- NULL
-    
-    
-    return(ttest_df)
-}
+See below for a dataframe of all the t-stats, p-values and fold changes calculated for for test substance 2
 
 
-
-
-```
-
-
-So lets run the function to get all the the p-values and fold changes for test substance 2
-
-
-```{r run_function}
-ttest_ts2 <- ttest_per_test_substance(pqn, sample_metadata, test_substance=2)
+```{r load_in_all_ttest_ts2}
+ttest_ts2 <- read.csv(file.path(root, 'data/ttest_ts2.csv'))
 ```
 
 Let's have a quick check of this dataframe. 
@@ -256,8 +179,7 @@ Let's have a quick check of this dataframe.
 sum(ttest_ts2$pvalue<0.05)
 ```
 
-So a substantial number of what seems siginficant changes. However we are deriving this from p-values. However in many cases 
-using multiple testing correction is recommended to avoid false positive results. 
+So a substantial number of what seem like significant changes. However when performing multiple t-tests and assessing significance then multiple testing correction should be performed to avoid false positive results. 
 
 Lets use the the `p.adjust` function to calculate adjusted p-values (i.e. q-values) with the 
 `fdr` method i.e. the Benjamini & Hochberg approach. 
@@ -293,6 +215,8 @@ ggplot(data=ttest_ts2, aes(x=log2(fc), y=-log10(qvalue), col=diff)) +
 ```
 
 # Summary of t-tests
+What about all the other test substances and other assays!
+
 Rather than repeating this on all the test substances and all assays in this training we have a data file already created with the relevant t-stats that we can use for grouping in the next section.
 
 Below we show a summary of all the t-test analysis done across all assays.

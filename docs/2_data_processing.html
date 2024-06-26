@@ -60,6 +60,29 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -365,9 +388,54 @@ alt="Fig 1.3 Feature X sample matrix of intensity" />  </p>
 <p>The full data processing from raw mass spectrometry data to usable
 omics data matrix for grouping is beyond the scope of this tutorial.
 Instead we will work with a few key data matrices that have undergone
-standard metabolomics data processing, see <a
-href="6_more_info.html">More info</a> for the details of how the data
-has been processed.</p>
+standard metabolomics data processing.</p>
+<p>In brief the following steps were performed:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Data reduction</strong> - Full scan (MS1) “peak picking”,
+grouping and any retention time correction performed by XCMS
+software.</li>
+<li><strong>QC assessment</strong> - and removal of poor quality
+QCs.</li>
+<li><strong>Xenobiotic metabolite filter</strong> - remove metabolites
+that are either the test substance or biotransformation products of the
+test substance.</li>
+<li><strong>Identification and removal of features</strong> - blank
+filter and missing value filter by QC (≥ 30% missing values in the QC
+samples are removed).</li>
+<li><strong>Signal-drift and batch-effect correction</strong> - to
+account for any signal drift or batch effects.</li>
+<li><strong>Further identification and removal of features</strong> -
+further filtering of features based on threshold of missing values and
+relative standard deviation of the features.</li>
+<li><strong>Probabilistic Quotient Normalisation (PQN)</strong> -
+accounts for dilution of complex biological mixtures.</li>
+<li><strong>Missing value imputation</strong> - using k nearest
+neighbour approach (for multivariate analysis only).</li>
+<li><strong>Generalised logarithm transform (glog)</strong> -
+variance-stabilising transformation that also reduces the weighting of
+very intense features in multivariate analysis so that they do not
+over-power less intense features that might still be significant (for
+multivariate analysis only)</li>
+</ol>
+<p>The full details of the data processing methods are found in the <a
+href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10944399/bin/204_2024_3680_MOESM1_ESM.pdf">supplemental
+of Cefic MATCHING publication</a> <span class="citation">(<a
+href="#ref-viant2024demonstrating">Viant et al. 2024</a>)</span>.</p>
+<p>The HILIC_POS assay for male rodents was used as an example for this
+practical with the following relevant data files for the training
+available on the github site:</p>
+<ul>
+<li><strong>HILIC_POS_male/1_unfiltered.csv</strong> - unfiltered
+intensity matrix</li>
+<li><strong>HILIC_POS_male/2_filtered.csv</strong> - filtered (both
+samples and features) intensity matrix</li>
+<li><strong>HILIC_POS_male/3_pqn.csv</strong> - PQN normalised intensity
+matrix</li>
+<li><strong>HILIC_POS_male/4_mv_imputed.csv</strong> - missing value
+imputed intensity matrix</li>
+<li><strong>HILIC_POS_male/5_glog.csv</strong> - glog intensity
+matrix</li>
+</ul>
 <div id="intensity-data-matrix" class="section level2">
 <h2>Intensity data matrix</h2>
 <p>Let’s start with the pre-filtering and pre-normalisation dataset and
@@ -418,6 +486,18 @@ c(&#39;remaining features:&#39;, feature_c_f)</code></pre>
 <p>Now that we have a better understanding of metabolomics data matrices
 we can briefly explain the quality assessments before getting started on
 the statistical analysis.</p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-viant2024demonstrating" class="csl-entry">
+Viant, Mark R, E Amstalden, T Athersuch, M Bouhifd, S Camuzeaux, DM
+Crizer, P Driemert, et al. 2024. <span>“Demonstrating the Reliability of
+in Vivo Metabolomics Based Chemical Grouping: Towards Best
+Practice.”</span> <em>Archives of Toxicology</em>, 1–13.
+</div>
 </div>
 </div>
 

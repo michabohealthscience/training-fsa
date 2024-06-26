@@ -45,7 +45,7 @@ The training has five stages
 3. [Quality assessments](3_qa.html) - A brief note on quality assessments **(5 minutes)**
 4. [Differentially abundant molecules - statistical analysis](4_stats.html) - Where we assess the bioactivity of the dataset and generate the input for the grouping **(20 minutes)**
 5. [Grouping](5_grouping.html)  - Where we use metrics generated from the univariate statistical analysis from the prior step to perform grouping **(30 minutes)**
-6. [More info](6_more_info.html) - Further details for those that are interested.
+
 
 
 
