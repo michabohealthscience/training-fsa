@@ -379,7 +379,7 @@ div.tocify {
 <div id="cefic-matching-metabolomics-data-set" class="section level1">
 <h1>Cefic MATCHING metabolomics data set</h1>
 <p>The tutorial will use data generated as part of the the <strong>Cefic
-MATCHING study</strong>, the aim of which was was to conduct a blinded
+MATCHING study</strong>, the aim of which was to conduct a blinded
 international ring-trial to investigate whether 6 metabolomics labs,
 each generating, analysing and reporting metabolomics data from a single
 exposure study (rodent plasma), generate the same grouping hypothesis
@@ -387,22 +387,19 @@ exposure study (rodent plasma), generate the same grouping hypothesis
 al. 2024</a>)</span>.</p>
 <p><img src="Phenome-Centre-Birmingham.png" width="300" /></p>
 <p>Rather than use all the data from the study, the tutorial will focus
-only on male rats and the processed mass spectrometry data derived from
-the data collected as part from one of the ring-trial labs (Phenome
-Centre Birmingham).</p>
-<p>We can unblind at the end of the tutorial (but if you can’t wait go
-straight to the final stage of the tutorial!).</p>
+only on <strong>male rats</strong> and the processed mass spectrometry
+data derived from the data collected as part from just one of the
+ring-trial labs (<strong>Phenome Centre Birmingham</strong>) .</p>
 <div class="float">
 <img src="pcb_ms.png" width="300"
-alt="Figure 1.1. Phenome Centre Birmingham - LC-MS" />
-<div class="figcaption">Figure 1.1. Phenome Centre Birmingham -
-LC-MS</div>
+alt="Phenome Centre Birmingham - LC-MS" />
+<div class="figcaption">Phenome Centre Birmingham - LC-MS</div>
 </div>
 <p> </p>
 </div>
-<div id="liquid-chromatography-mass-spectrometry"
+<div id="liquid-chromatography-mass-spectrometry-assays"
 class="section level1">
-<h1>Liquid chromatography mass spectrometry</h1>
+<h1>Liquid chromatography mass spectrometry assays</h1>
 <p>Mass spectrometry coupled liquid chromatography (in particular
 high-resolution mass spectrometry with Ultra-high-performance liquid
 chromatography - UHPLC-MS) is an effective and popular approach for
@@ -412,26 +409,6 @@ tutorial.</p>
 href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10944399/bin/204_2024_3680_MOESM1_ESM.pdf">supplemental
 of Cefic MATCHING publication</a> <span class="citation">(<a
 href="#ref-viant2024demonstrating">Viant et al. 2024</a>)</span>.</p>
-<p>The raw data collected from UHPLC-MS and LC-MS more generally can be
-thought of within 3 dimensions.</p>
-<ul>
-<li><strong>Retention time (RT)</strong>: This time at which the
-metabolites are eluted from the chromatography column based on the
-physiochemical properties of the metabolite</li>
-<li><strong>Mass-to-charge (<em>m/z</em>) </strong>: The <em>m/z</em> of
-the metabolites that have been ionized to gas-phase ions then separated
-and detected by the mass spectrometer.</li>
-<li><strong>Intensity</strong>: The intensity of each <em>m/z</em> -
-proportional to the number of ions detected (note though that without
-use of reference standards this cannot be directly used as the
-concentration due to various contributing factors e.g. ion
-suppression)</li>
-</ul>
-<div class="float">
-<img src="mz_rt_intensity.png" width="400" alt="Fig 1.2 LC-MS data" />
-<div class="figcaption">Fig 1.2 LC-MS data</div>
-</div>
-<p> </p>
 <p>The UHPLC−MS approach used for our dataset consisited of four assays,
 comprising of two types of chromatography and two mass spectromety
 ionisation modes (positive and negative). The chromatographic columns
@@ -444,21 +421,43 @@ lipids). These will be referred to as the following from now on:</p>
 <li>LIPIDS_POS</li>
 <li>LIPIDS_NEG</li>
 </ul>
-<p>We will be focusing only on one assay (HILIC_POS) for most steps in
-the tutorial to make the data analysis more managable.</p>
+<p>We will be focusing only on one assay (<strong>HILIC_POS</strong>)
+for most steps in the tutorial to make the data analysis more
+manageable.</p>
+<p>The raw data collected from these LC-MS assays can generally can be
+thought of within 3 dimensions.</p>
+<ul>
+<li><strong>Retention time (RT)</strong>: This time at which the
+metabolites are eluted from the chromatography column based on the
+physiochemical properties of the metabolite.</li>
+<li><strong>Mass-to-charge (<em>m/z</em>) </strong>: The <em>m/z</em> of
+the metabolites that have been ionized to gas-phase ions then separated
+and detected by the mass spectrometer.</li>
+<li><strong>Intensity</strong>: The intensity of each <em>m/z</em> -
+proportional to the number of ions detected (note though that without
+use of reference standards this cannot be directly used as the
+concentration due to various contributing factors e.g. ion
+suppression)</li>
+</ul>
+<div class="float">
+<img src="mz_rt_intensity.png" width="400" alt="LC-MS data" />
+<div class="figcaption">LC-MS data</div>
+</div>
+<p> </p>
 </div>
 <div id="sample-metadata" class="section level1">
 <h1>Sample metadata</h1>
-<p>So… lets finally read in some data. Let’s begin with the metadata for
-the samples</p>
-<p>We will be using data directly downloaded from the Github repository
-so the following root URL should be used. If you are using data
-downloaded locally this will need to be updated to the relative path of
-the data.</p>
+<p>So… lets finally start using R and RStudio. Let’s begin with looking
+at the metadata for the samples to better understand the dataset.</p>
+<p>All files for this practical will be downloaded directly downloaded
+from the Github repository. See the following root URL below.</p>
 <pre class="r"><code>root &lt;- &#39;https://raw.githubusercontent.com/michabohealthscience/training-fsa/main&#39;</code></pre>
+<p>If you are using data downloaded locally please change the
+<code>root</code> variable to path where of your data.</p>
 <p>The sample metadata is stored in a comma separated text file (.csv).
-We can read this into R using the <code>read.csv</code> function. This
-will save the metadata as a <code>dataframe</code> R object.</p>
+We can read this into R using the <code>read.csv</code> function and
+putting the URL path to the ‘.csv’ file. This will save the metadata as
+a <code>dataframe</code> R object.</p>
 <pre class="r"><code>sample_metadata_all &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/0_sample_metadata.csv&#39;))</code></pre>
 <p>Lets have a quick look at the sample metadata. We can use the
 <code>head</code> function to just see the first few rows</p>
@@ -486,6 +485,7 @@ will save the metadata as a <code>dataframe</code> R object.</p>
 ## 6          2          1        1</code></pre>
 <p>We can use <code>View(sample_metadata)</code> in a more user friendly
 manner within RStudio where you can filter the columns</p>
+<p><img src="RStudio_sample_metadata_view.png" /></p>
 <p>The following information regarding independent variables for each
 sample was available prior to unblinding:</p>
 <ul>

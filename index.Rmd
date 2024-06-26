@@ -21,7 +21,7 @@ The session focuses on a practical introduction to the calculation and interpret
 
 &nbsp;
 
-The training will use existing code developed by Michabo Health Science Limited, and run within R (and R studio) which should be installed on the trainees local computer.
+The training will use existing code developed by Michabo Health Science Ltd, and run within R (and R studio) which should be installed on the trainees local computer.
 
 Working individually or in pairs, attendees will self-pace their progress through the training material and example data provided.
 
@@ -55,15 +55,34 @@ R (and R Studio) with the majority of the packages should already be pre-install
 
 See below for a reminder of the different panels will be using in R Studio today
 
-![Fig 2. RStudio panels](Rstudio.png)
+![Fig 2. RStudio panels](Rstudio.png){width=600px}
 &nbsp;
 
+&nbsp;
 
+## RStudio setup for training
 
+We recommend that everyone creates a new R Script - where they are copying and pasting the relevant R code throughout the tutorial.
 
+So please follow these steps before we being
 
+* Create a new R script
+* Save with an appropiate name (e.g. omics_grouping_training.R)
+* Copy and paste the code snippet below
+* Run the command
 
+Example code snippet
 
+```{r code_snippet}
+# Copy and paste commands from the practical into your script
+# and run either by clicking on the "run" button or 
+# typing Ctrl+Enter on the keyboard. 
+
+print("hellow world!")
+
+```
+
+![](rstudio_training_setup.gif)
 
 
 ## References
