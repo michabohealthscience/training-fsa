@@ -506,7 +506,7 @@ alt="Cefic MATCHING unblinded - summary" />
 unblinded_names &lt;- read.csv(file.path(root, &#39;data/unblinded_ordered_names.csv&#39;), header = TRUE)
 pvclust_res_unblind &lt;- pvclust_res
 unblinded_names_sorted &lt;- unblinded_names[match(pvclust_res$hclust$labels, unblinded_names$test_substance_dose), ]  
-pvclust_res_unblind$hclust$labels &lt;- unblinded_names_sorted$full_label
+pvclust_res_unblind$hclust$labels &lt;- unblinded_names_sorted$compound_name_dose_moa
 plot(pvclust_res_unblind, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)</code></pre>
 <p><img src="5_grouping_files/figure-html/HCA_unblind-1.png" width="768" /></p>
 </div>
