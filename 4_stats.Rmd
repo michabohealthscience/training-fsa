@@ -179,7 +179,7 @@ Let's have a quick check of this dataframe.
 sum(ttest_ts2$pvalue<0.05)
 ```
 
-So a substantial number of what seem like significant changes. However when performing multiple t-tests and assessing significance then multiple testing correction should be performed to avoid false positive results. 
+Multiple testing correction is recommended when performing multiple t-tests to reduce the false positive results. 
 
 Lets use the the `p.adjust` function to calculate adjusted p-values (i.e. q-values) with the 
 `fdr` method i.e. the Benjamini & Hochberg approach. 
@@ -195,7 +195,6 @@ So for this test substance we know we have a large number of metabolite features
 Let's do a visualisation of this with a volcano plot to give a better idea of what is either moving "up" or "down".
 
 ```{r multiple_testing_correction}
-library(tidyr)
 
 
 ttest_ts2$diff <- 'NONE'

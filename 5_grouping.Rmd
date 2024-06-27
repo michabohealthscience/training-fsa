@@ -101,13 +101,10 @@ Lets do that again but this time with unblinded labelled columns
 ```{r HCA_unblind, fig.height=8, fig.width=8}
 library(pvclust)
 unblinded_names <- read.csv(file.path(root, 'data/unblinded_ordered_names.csv'), header = TRUE)
-colnames(tstats) <- unblinded_names$full_label
-
-tstats_scaled <- scale(tstats, center=FALSE, scale=TRUE)
-
-pvclust_res <- pvclust(tstats_scaled, method.dist="euclidean", method.hclust = "ward.D2",  nboot=100)
-
-plot(pvclust_res, c("si", "au", "bp"), hang=-1)
+pvclust_res_unblind <- pvclust_res
+unblinded_names_sorted <- unblinded_names[match(pvclust_res$hclust$labels, unblinded_names$test_substance_dose), ]  
+pvclust_res_unblind$hclust$labels <- unblinded_names_sorted$full_label
+plot(pvclust_res_unblind, c("si", "au", "bp"), hang=-1)
 
 ```
 
@@ -120,41 +117,6 @@ plot(pvclust_res, c("si", "au", "bp"), hang=-1)
 ![](confidence_in_hca.png)
 &nbsp;
 
-# t-stat - PCA
-
-We can also represent the data using PCA 
-
-```{r PCA_unblind, fig.height=6, fig.width=8}
-library(ggplot2)
-# transpose as features should be columns
-tstats_scaled_t <- data.frame(t(tstats_scaled))
-
-# Simply giving missing values a value of zero (but in practice this should be looked into more
-# closely and missing value imputed approaches can be used
-tstats_scaled_t[is.na(tstats_scaled_t)] <- 0
-
-# remove features with no response
-tstats_scaled_t_rm0 <- tstats_scaled_t[, colSums(tstats_scaled_t != 0) > 0]
-
-# Run PCA
-pca_tstats <- prcomp(tstats_scaled_t_rm0, center = TRUE, scale. = TRUE)
-summ <- summary(pca_tstats)
-tstats_scaled_t_rm0$full_label <- rownames(tstats_scaled_t_rm0)
-
-pca_df <- data.frame(cbind(pca_tstats$x[,1:2], unblinded_names))
-
-# Plot the PCA
-ggplot(pca_df, aes(PC1, PC2, color=moa, label=moa)) + 
-   geom_text(aes(label = compound_name_dose), hjust = 0.5,  vjust = -1) +
-   geom_point(aes(color=moa)) +
-   stat_ellipse(geom = "polygon", aes(fill = after_scale(alpha(colour, 0.3))))+
-   scale_colour_manual(values=c("orange","black","blue"))+
-   xlab(paste("PC1 (", round(summ$importance[2,1]*100,1), "%)", sep='')) +
-   ylab(paste("PC2 (", round(summ$importance[2,2]*100,1), "%)", sep='')) +
-    
-   theme_bw()
-
-```
 
 
 

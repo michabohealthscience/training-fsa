@@ -504,61 +504,16 @@ alt="Cefic MATCHING unblinded - summary" />
 <p>Lets do that again but this time with unblinded labelled columns</p>
 <pre class="r"><code>library(pvclust)
 unblinded_names &lt;- read.csv(file.path(root, &#39;data/unblinded_ordered_names.csv&#39;), header = TRUE)
-colnames(tstats) &lt;- unblinded_names$full_label
-
-tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)
-
-pvclust_res &lt;- pvclust(tstats_scaled, method.dist=&quot;euclidean&quot;, method.hclust = &quot;ward.D2&quot;,  nboot=100)</code></pre>
-<pre><code>## Bootstrap (r = 0.5)... Done.
-## Bootstrap (r = 0.6)... Done.
-## Bootstrap (r = 0.7)... Done.
-## Bootstrap (r = 0.8)... Done.
-## Bootstrap (r = 0.9)... Done.
-## Bootstrap (r = 1.0)... Done.
-## Bootstrap (r = 1.1)... Done.
-## Bootstrap (r = 1.2)... Done.
-## Bootstrap (r = 1.3)... Done.
-## Bootstrap (r = 1.4)... Done.</code></pre>
-<pre class="r"><code>plot(pvclust_res, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)</code></pre>
+pvclust_res_unblind &lt;- pvclust_res
+unblinded_names_sorted &lt;- unblinded_names[match(pvclust_res$hclust$labels, unblinded_names$test_substance_dose), ]  
+pvclust_res_unblind$hclust$labels &lt;- unblinded_names_sorted$full_label
+plot(pvclust_res_unblind, c(&quot;si&quot;, &quot;au&quot;, &quot;bp&quot;), hang=-1)</code></pre>
 <p><img src="5_grouping_files/figure-html/HCA_unblind-1.png" width="768" /></p>
 </div>
 <div id="assessing-confidence-in-the-grouping-hypothesis"
 class="section level1">
 <h1>Assessing confidence in the grouping hypothesis</h1>
 <p><img src="confidence_in_hca.png" />  </p>
-</div>
-<div id="t-stat---pca" class="section level1">
-<h1>t-stat - PCA</h1>
-<p>We can also represent the data using PCA</p>
-<pre class="r"><code>library(ggplot2)
-# transpose as features should be columns
-tstats_scaled_t &lt;- data.frame(t(tstats_scaled))
-
-# Simply giving missing values a value of zero (but in practice this should be looked into more
-# closely and missing value imputed approaches can be used
-tstats_scaled_t[is.na(tstats_scaled_t)] &lt;- 0
-
-# remove features with no response
-tstats_scaled_t_rm0 &lt;- tstats_scaled_t[, colSums(tstats_scaled_t != 0) &gt; 0]
-
-# Run PCA
-pca_tstats &lt;- prcomp(tstats_scaled_t_rm0, center = TRUE, scale. = TRUE)
-summ &lt;- summary(pca_tstats)
-tstats_scaled_t_rm0$full_label &lt;- rownames(tstats_scaled_t_rm0)
-
-pca_df &lt;- data.frame(cbind(pca_tstats$x[,1:2], unblinded_names))
-
-# Plot the PCA
-ggplot(pca_df, aes(PC1, PC2, color=moa, label=moa)) + 
-   geom_text(aes(label = compound_name_dose), hjust = 0.5,  vjust = -1) +
-   geom_point(aes(color=moa)) +
-   stat_ellipse(geom = &quot;polygon&quot;, aes(fill = after_scale(alpha(colour, 0.3))))+
-   scale_colour_manual(values=c(&quot;orange&quot;,&quot;black&quot;,&quot;blue&quot;))+
-   xlab(paste(&quot;PC1 (&quot;, round(summ$importance[2,1]*100,1), &quot;%)&quot;, sep=&#39;&#39;)) +
-   ylab(paste(&quot;PC2 (&quot;, round(summ$importance[2,2]*100,1), &quot;%)&quot;, sep=&#39;&#39;)) +
-    
-   theme_bw()</code></pre>
-<p><img src="5_grouping_files/figure-html/PCA_unblind-1.png" width="768" /></p>
 </div>
 <div id="chemical-grouping-using-structure-only" class="section level1">
 <h1>Chemical grouping using structure only</h1>
