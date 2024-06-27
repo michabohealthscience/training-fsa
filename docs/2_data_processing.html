@@ -457,12 +457,12 @@ feature_c_all
 samp_c_all</code></pre>
 <pre><code>## [1] 12123
 ## [1] 112</code></pre>
-<p>We can compare this the the filtered data matrix to see how many
+<p>We can compare this to the filtered data matrix to see how many
 features have been removed due to the standard processing steps</p>
 <pre class="r"><code>hilic_pos_f &lt;- read.csv(file.path(root, &#39;data/HILIC_POS_male/2_filtered.csv&#39;))</code></pre>
 <p>For this dataset we should see that only 1 sample will be removed
-(the blank sample - as it is no longer required for furher analysis) and
-substantial number of the metabolite features will have been removed
+(the blank sample - as it is no longer required for further analysis)
+and substantial number of the metabolite features will have been removed
 that were deemed not suitable for further analysis.</p>
 <pre class="r"><code># feature count
 feature_c_f = nrow(hilic_pos_f)
