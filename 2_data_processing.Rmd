@@ -95,12 +95,12 @@ samp_c_all
 
 ```
 
-We can compare this the the filtered data matrix to see how many features have been removed due to the standard processing steps
+We can compare this to the filtered data matrix to see how many features have been removed due to the standard processing steps
 ```{r hilic_pos_intensity_filtered, results = "hold"}
 hilic_pos_f <- read.csv(file.path(root, 'data/HILIC_POS_male/2_filtered.csv'))
 ```
 
-For this dataset we should see that only 1 sample will be removed (the blank sample - as it is no longer required for furher analysis) and substantial number of the metabolite features will have been removed that were deemed not suitable for further analysis.
+For this dataset we should see that only 1 sample will be removed (the blank sample - as it is no longer required for further analysis) and substantial number of the metabolite features will have been removed that were deemed not suitable for further analysis.
 
 
 ```{r hilic_pos_intensity_filtered_cols_rows, results = "hold"}
