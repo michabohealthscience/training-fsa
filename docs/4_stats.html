@@ -492,10 +492,8 @@ changes calculated for for test substance 2</p>
 <p>Let’s have a quick check of this dataframe.</p>
 <pre class="r"><code>sum(ttest_ts2$pvalue&lt;0.05)</code></pre>
 <pre><code>## [1] 2903</code></pre>
-<p>So a substantial number of what seem like significant changes.
-However when performing multiple t-tests and assessing significance then
-multiple testing correction should be performed to avoid false positive
-results.</p>
+<p>Multiple testing correction is recommended when performing multiple
+t-tests to reduce the false positive results.</p>
 <p>Lets use the the <code>p.adjust</code> function to calculate adjusted
 p-values (i.e. q-values) with the <code>fdr</code> method i.e. the
 Benjamini &amp; Hochberg approach.</p>
@@ -506,10 +504,7 @@ sum(ttest_ts2$qvalue&lt;0.05)</code></pre>
 metabolite features changing significantly.</p>
 <p>Let’s do a visualisation of this with a volcano plot to give a better
 idea of what is either moving “up” or “down”.</p>
-<pre class="r"><code>library(tidyr)
-
-
-ttest_ts2$diff &lt;- &#39;NONE&#39;
+<pre class="r"><code>ttest_ts2$diff &lt;- &#39;NONE&#39;
 ttest_ts2$diff[ttest_ts2$tstat&lt;0 &amp; ttest_ts2$qvalue&lt;0.05] &lt;- &#39;DOWN&#39;
 ttest_ts2$diff[ttest_ts2$tstat&gt;0 &amp; ttest_ts2$qvalue&lt;0.05] &lt;- &#39;UP&#39;
 

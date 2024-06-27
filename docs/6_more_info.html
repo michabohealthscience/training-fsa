@@ -446,6 +446,50 @@ ttest_per_test_substance &lt;- function(pqn, sample_metadata, test_substance=2){
 ## [1] &quot;13000&quot; &quot;of&quot;    &quot;14652&quot;
 ## [1] &quot;14000&quot; &quot;of&quot;    &quot;14652&quot;</code></pre>
 </div>
+<div id="t-stat---pca" class="section level1">
+<h1>t-stat - PCA</h1>
+<p>We can also represent the data using PCA</p>
+<pre class="r"><code>library(ggplot2)
+
+
+tstats &lt;- read.csv(file.path(root, &#39;data/combined_male_tstats.csv&#39;), row.names = 1)
+
+tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)
+
+unblinded_names &lt;- read.csv(file.path(root, &#39;data/unblinded_ordered_names.csv&#39;), header = TRUE)
+colnames(tstats) &lt;- unblinded_names$full_label
+
+tstats_scaled &lt;- scale(tstats, center=FALSE, scale=TRUE)
+
+# transpose as features should be columns
+tstats_scaled_t &lt;- data.frame(t(tstats_scaled))
+
+# Simply giving missing values a value of zero (but in practice this should be looked into more
+# closely and missing value imputed approaches can be used
+tstats_scaled_t[is.na(tstats_scaled_t)] &lt;- 0
+
+# remove features with no response
+tstats_scaled_t_rm0 &lt;- tstats_scaled_t[, colSums(tstats_scaled_t != 0) &gt; 0]
+
+# Run PCA
+pca_tstats &lt;- prcomp(tstats_scaled_t_rm0, center = TRUE, scale. = TRUE)
+summ &lt;- summary(pca_tstats)
+tstats_scaled_t_rm0$full_label &lt;- rownames(tstats_scaled_t_rm0)
+
+pca_df &lt;- data.frame(cbind(pca_tstats$x[,1:2], unblinded_names))
+
+# Plot the PCA
+ggplot(pca_df, aes(PC1, PC2, color=moa, label=moa)) + 
+   geom_text(aes(label = compound_name_dose), hjust = 0.5,  vjust = -1) +
+   geom_point(aes(color=moa)) +
+   stat_ellipse(geom = &quot;polygon&quot;, aes(fill = after_scale(alpha(colour, 0.3))))+
+   scale_colour_manual(values=c(&quot;orange&quot;,&quot;black&quot;,&quot;blue&quot;))+
+   xlab(paste(&quot;PC1 (&quot;, round(summ$importance[2,1]*100,1), &quot;%)&quot;, sep=&#39;&#39;)) +
+   ylab(paste(&quot;PC2 (&quot;, round(summ$importance[2,2]*100,1), &quot;%)&quot;, sep=&#39;&#39;)) +
+    
+   theme_bw()</code></pre>
+<p><img src="6_more_info_files/figure-html/PCA_unblind-1.png" width="768" /></p>
+</div>
 
 
 
